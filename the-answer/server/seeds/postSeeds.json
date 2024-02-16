@@ -1,0 +1,28 @@
+
+[
+  {
+    "title": "First Post",
+    "body": "This is the body of my first post.",
+    "thumbnail": "thumbnail1.jpg",
+    "tags": ["tag1", "tag2"],
+    "images": [["image1.jpg", "image2.jpg"]],
+    "userId": "632f1b2c3d4e5f67890a1b2c",
+    "createdAt": "2023-04-01T00:00:00.000Z",
+    "comments": ["632f1b2c3d4e5f67890a1b2d", "632f1b2c3d4e5f67890a1b2e"],
+    "likes": ["632f1b2c3d4e5f67890a1b2f", "632f1b2c3d4e5f67890a1b30"],
+    "dislikes": ["632f1b2c3d4e5f67890a1b31"]
+  },
+  {
+    "title": "Second Post",
+    "body": "This is the body of my second post.",
+    "thumbnail": "thumbnail2.jpg",
+    "tags": ["tag3", "tag4"],
+    "images": [["image3.jpg", "image4.jpg"]],
+    "userId": "632f1b2c3d4e5f67890a1b3c",
+    "createdAt": "2023-04-02T00:00:00.000Z",
+    "comments": ["632f1b2c3d4e5f67890a1b3d", "632f1b2c3d4e5f67890a1b3e"],
+    "likes": ["632f1b2c3d4e5f67890a1b3f", "632f1b2c3d4e5f67890a1b40"],
+    "dislikes": ["632f1b2c3d4e5f67890a1b41"]
+  }
+]
+
