@@ -1,7 +1,6 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
-import {  Homepage } from './pages'
-import { Login } from './pages'
+import { Login, Homepage, Register } from './pages'
 
 
 
@@ -12,6 +11,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Homepage />} />
        <Route path="/login" element={<Login/>} />
+       <Route path="/register" element={<Register/>} />
       </Routes>
     </div>
   )

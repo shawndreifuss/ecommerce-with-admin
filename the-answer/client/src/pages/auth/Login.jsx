@@ -124,10 +124,7 @@ const Login = () => {
 {/*  Loader */}
 {loading ? (
 <>
-      <ScatterBoxLoader
-        primaryColor={"#6366F1"}
-        background={theme.colors["background"]}
-      />
+      
       <ToastContainer
         position="bottom-center"
         autoClose={3000}
