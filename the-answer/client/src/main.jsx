@@ -5,6 +5,7 @@ import './index.css'
 import { BrowserRouter } from 'react-router-dom'
 import "react-toastify/dist/ReactToastify.css"  
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(

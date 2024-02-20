@@ -207,20 +207,16 @@ const Register = () => {
 
             <div>
               <label className="inline-flex items-center cursor-pointer">
-                <input
-                  id="customCheckLogin"
-                  type="checkbox"
-                  className="form-checkbox border-0 rounded text-blueGray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150"
-                />
                 <span className="ml-2 text-sm font-semibold text-blueGray-600">
-                  I agree with the{" "}
-                  <a
+                  Already have an account? <Link className="underline text-blue-700" to={'/login'} >Login!</Link>
+                  <div 
                     href="#pablo"
                     className="text-lightBlue-500"
-                    onClick={(e) => e.preventDefault()}
+                    
                   >
-                    Privacy Policy
-                  </a>
+                     
+                  </div>
+                
                 </span>
               </label>
             </div>
@@ -233,11 +229,15 @@ const Register = () => {
               </button>
             </div>
           </form>
+          
         </div>
       </div>
     </div>
+    
   </div>
+  
 </div>
+
       <ToastContainer
         position="bottom-center"
         autoClose={3000}

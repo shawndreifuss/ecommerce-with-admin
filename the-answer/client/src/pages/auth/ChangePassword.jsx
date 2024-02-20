@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
+import { Button,  Label, TextInput } from 'flowbite-react';
 import axios from 'axios';
 
 
@@ -64,34 +65,36 @@ const ChangePassword = () => {
   };
 
   return (
-    <div>
-      <h2>Change Password</h2>
+    <>
+  <div className='flex w-screen h-screen items-center justify-center bg-gray-100'>
+    <form className="flex max-w-lg flex-col gap-4" onSubmit={onSubmit}>
       {message && <p>{message}</p>}
-      <form onSubmit={onSubmit}>
-        <div>
-          <label htmlFor="newPassword">New Password:</label>
-          <input
-            type="password"
+      <div>
+        <div className="mb-2 block">
+          <Label htmlFor="password1" value="Your password" />
+        </div>
+        <TextInput  type="password"
             id="newPassword"
             name="newPassword"
             value={newPassword}
             onChange={onChange}
-            required
-          />
+            required shadow />
+      </div>
+      <div>
+        <div className="mb-2 block">
+          <Label htmlFor="confirmPassword" value="Repeat password" />
         </div>
-        <div>
-          <label htmlFor="confirmPassword">Confirm New Password:</label>
-          <input
-            type="password"
+        <TextInput  type="password"
             id="confirmPassword"
             name="confirmPassword"
             value={confirmPassword}
             onChange={onChange}
-            required
-          />
-        </div>
-        <button type="submit">Change Password</button>
-      </form>
+            requiredrequired shadow />
+      </div>
+     
+      <Button type="submit">Change Password</Button>
+    </form>
+    </div>
       <ToastContainer
         position="bottom-center"
         autoClose={3000}
@@ -104,8 +107,13 @@ const ChangePassword = () => {
         pauseOnHover
         theme="light"
       />
-    </div>
+      </>
+
+    
   );
 };
 
 export default ChangePassword;
+
+
+

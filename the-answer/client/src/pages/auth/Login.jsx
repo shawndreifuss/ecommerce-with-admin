@@ -4,6 +4,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import ForgotPassword from "./ForgotPassword";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -125,18 +126,6 @@ const Login = () => {
 {loading ? (
 <>
       
-      <ToastContainer
-        position="bottom-center"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
     </>
   ) : (
  <section className="relative w-full h-full py-40 min-h-screen">
@@ -246,16 +235,10 @@ const Login = () => {
             </div>
             <div className="flex flex-wrap mt-6 relative">
               <div className="w-1/2">
-                <Link
-                  to={"/auth/reset-password"}
-                  href="#pablo"
-                  className="text-blueGray-200"
-                >
-                  <small>Forgot password?</small>
-                </Link>
+                <ForgotPassword />
               </div>
               <div className="w-1/2 text-right">
-                <Link to="/auth/register" className="text-blueGray-200">
+                <Link to="/register" className="text-blueGray-200">
                   <small>Create new account</small>
                 </Link>
               </div>
@@ -266,6 +249,18 @@ const Login = () => {
       
       </section>
   )}
+   <ToastContainer
+        position="bottom-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </>
   );
 };
