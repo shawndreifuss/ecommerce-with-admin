@@ -1,22 +1,28 @@
-const { User } = require("../models");
+const { User, UserSettings } = require("../models");
 const { createToken } = require("../middleware/createToken");
 const bcrypt = require("bcrypt");
 const sendMail = require("../utils/sendEmail");
 
 
 //  Register /api/auth/register
-module.exports.Register = async (req, res) => {
+module.exports.Register = async (req, res, next) => {
   try {
     const { email, password, username } = req.body;
     const existingUser = await User.findOne({ email }).lean(); // Use lean() for performance if you're only reading data
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
-    const user = await User.create({ email, password, username });
-    const token = createToken(user._id);
+    const user = await User.create({ email, password, username, settings: null });
+    const userSettings = await UserSettings.create({userId: user._id});
+    user.settings = userSettings._id;
+    await user.save();
+    const token = createToken(user._id);  
     // Set secure: true in production for HTTPS
     res.cookie("token", token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
-    return res.status(201).json({ success: true, message: "Welcome " + user.username });
+    return res.status(201).json({ success: true, message: "Welcome " + user.username,  user: {
+      ...user.toObject(), // Convert Mongoose model instance to a plain JavaScript object
+      userSettings: userSettings.toObject() // Include user settings in the response
+    }});
   } catch (error) {
     return res.status(500).json({ success: false, message: "Something went wrong, please try again." });
   }
@@ -164,10 +170,10 @@ module.exports.ChangePassword = async (req, res, next) => {
 module.exports.GetMe = async (req, res, next) => {
   try {
     console.log(req.user)
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(req.user.id).populate("settings").lean();
     console.log(user)
     if(!user) {
-      return next(new ErrorHandler("User doesn't exists!", 400));
+      return next("User not found");
     }
 
     res.status(200).json({
@@ -177,7 +183,7 @@ module.exports.GetMe = async (req, res, next) => {
 
    }catch
     (error) {
-      return next(new ErrorHandler(error.message, 500));
+      return next("new ErrorHandler(error.message, 500)");
     }
 
 

@@ -24,6 +24,28 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: 'https://m.media-amazon.com/images/I/41jLBhDISxL.jpg'
     },
+    settings: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'UserSettings'
+    },
+    bookmarks: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Post'
+        }
+    ],
+    followers: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ],
+    following: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ],
     isAdmin: {  
         type: Boolean,  
         default: true 
