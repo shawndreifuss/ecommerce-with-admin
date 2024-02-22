@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect} from 'react'
 import {  Route, Routes } from "react-router-dom";
-import { useSelector } from'react-redux'
-import { loadUser } from './redux/actions/user'
-import { useDispatch } from'react-redux'
-import  Store   from './redux/store'
-
+import { UserProvider } from './context/UserContext';
+import { useUser } from './context/UserContext';
 
 // Layouts 
 import Admin from './layouts/admin'
@@ -16,41 +13,28 @@ import Register from './pages/auth/Register'
 //  Views
 import Landing from './views/Landing'
 import Profile from './views/Profile'
+import Blogs from './views/Blogs';
 
 const App = () => {
-const [isUserAuth, setIsUserAuth] = useState(false)
 
-
-//  Load User
-useEffect(() => {
-  Store.dispatch(loadUser())
-  const authenticated = Store.getState().user.isAuthenticated
-  console.log(Store.getState())
-  console.log(authenticated)
-   setIsUserAuth(authenticated)
-   }, [isUserAuth])
- 
-    
 
   return (
-
-   
+<UserProvider>
     <Routes>
       {/* add routes with layouts */}
       <Route path="/admin" element={<Admin/>} />
       <Route path="/auth" element={<Auth/>} />
       <Route path='/login' element={<Login/>} />
       <Route path='/register' element={<Register/>} />
-      {/* add routes without layouts */}
-
       <Route path="/landing" element={<Landing/>} />
-      <Route path="/profile" element={<Profile/>} />
+      <Route path="/blogs" element={<Blogs/>} />
+      <Route path="/blogs/profile/:userId" element={<Profile/>} />
       
       {/* <Route path="/" element={<Index/>} /> */}
       {/* add redirect for first page */}
       {/* <Redirect from="*" to="/" /> */}
     </Routes>
- 
+  </UserProvider>
   )
 }
 

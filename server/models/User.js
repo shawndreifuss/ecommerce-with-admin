@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema({
         min: 6,
         max: 1024
     },
+    avatar: {
+        type: String,
+        default: 'https://m.media-amazon.com/images/I/41jLBhDISxL.jpg'
+    },
     isAdmin: {  
         type: Boolean,  
         default: true 

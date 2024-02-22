@@ -12,11 +12,7 @@ module.exports.Register = async (req, res) => {
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
-
-    // Consider hashing the password asynchronously in a way that does not block the event loop
-    const hashedPassword = await bcrypt.hash(password, 10); // Example cost factor
     const user = await User.create({ email, password, username });
-
     const token = createToken(user._id);
     // Set secure: true in production for HTTPS
     res.cookie("token", token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
@@ -40,8 +36,8 @@ module.exports.Login = async (req, res) => {
     }
 
     const token = createToken(user._id);
-    console.log(token);
     res.cookie("token", token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+
     return res.status(200).json({ success: true, message: "Welcome back " + user.username });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
@@ -135,7 +131,6 @@ module.exports.ChangePassword = async (req, res, next) => {
     const {resetToken} = req.params;
     
     const newPassword = password
-    console.log(newPassword)
     const user = await User.findOne({
       passwordResetToken: resetToken,
       passwordResetExpires: { $gt: Date.now() }
@@ -166,15 +161,31 @@ module.exports.ChangePassword = async (req, res, next) => {
 
 
 // Load User 
- module.exports.GetUser = async (req, res) => {
+module.exports.GetMe = async (req, res, next) => {
   try {
-      // Assuming the JWT token includes the user's ID in its payload
-      const user = await User.findById(req.user.id).select('-password'); // Exclude password field
-      if (!user) return res.status(404).json({ message: 'User not found' });
+    console.log(req.user)
+    const user = await User.findById(req.user.id);
+    console.log(user)
+    if(!user) {
+      return next(new ErrorHandler("User doesn't exists!", 400));
+    }
 
-      res.json({ user });
-  } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Server Error' });
-  }
+    res.status(200).json({
+      success: true,
+      user
+    })
+
+   }catch
+    (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+
+
 }
+
+
+//  Logout /api/auth/logout
+module.exports.Logout = async (req, res, next) => {
+    res.clearCookie('token');
+    res.json({ message: 'Logout successful' });
+};

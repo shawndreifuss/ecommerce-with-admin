@@ -1,15 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import ForgotPassword from "./ForgotPassword";
+import { useUser } from "../../context/UserContext";
+
 
 
 const Login = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+
+  const { dispatch } = useUser();
+
+
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/api/auth/me', { withCredentials: true });
+        // Dispatch action to set user
+        dispatch({ type: 'SET_USER', payload: response.data.user });
+        console.log('User fetched successfully');
+      } catch (error) {
+        console.error('Failed to fetch user', error);
+      }
+    };
+  
+    useEffect(() => {
+      fetchUserData();
+    }, []);
+
+
 
 
   //  Getting google response and decoding it
@@ -48,7 +70,8 @@ const Login = () => {
           handleSuccess(message);
           setLoading(true);
           setTimeout(() => {
-            navigate("/landing");
+            window.reload()
+            navigate("/landing", { replace: true });
           }, 3000);
         } else {
           console.log(message);

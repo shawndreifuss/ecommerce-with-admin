@@ -1,19 +1,24 @@
 const jwt = require('jsonwebtoken');
 
+// Assuming you're using Express and cookie-parser is set up
 const verifyToken = (req, res, next) => {
-    const token = req.header('Authorization')?.split(' ')[1]; // Assuming token is sent as "Bearer <token>"
+    // Accessing the token from cookies
+    const token = req.cookies.token; // Make sure you have cookie-parser middleware set up
 
+    // Check if token is not present
     if (!token) {
-        return res.status(401).json({ message: 'Access Denied' });
+      return res.status(403).send("A token is required for authentication");
     }
 
     try {
-        const verified = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = verified; // Add the user payload to the request
-        console.log(verified);
-        next(); // Proceed to the next middleware or route handler
-    } catch (error) {
-        res.status(400).json({ message: 'Invalid Token' });
+      // Verify token
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      // Attach the user (decoded token) to the request object
+      req.user = decoded;
+      next(); // Pass control to the next middleware function
+    } catch (err) {
+      // Handle invalid token
+      return res.status(401).send("Invalid Token");
     }
 };
 

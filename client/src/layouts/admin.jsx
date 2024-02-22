@@ -3,8 +3,8 @@ import React from "react";
 
 // components
 
-import AdminSidebar from "../components/Sidebars/AdminSidebar";
-import AdminNavbar from "../components/Navbars/AdminNavbar";
+import AdminSidebar from "../components/Sidebars/MainSidebar";
+import AdminNavbar from "../components/Navbars/MainNavbar";
 import Header from "../components/Headers/Header";
 // import HeaderStats from "components/Headers/HeaderStats.js";
 // import FooterAdmin from "components/Footers/FooterAdmin.js";
