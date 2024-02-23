@@ -12,6 +12,19 @@ const Register = () => {
     confirmPassword: "",
   });
 
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get("http://localhost:3001/api/auth/me", {
+        withCredentials: true,
+      });
+      // Dispatch action to set user
+      dispatch({ type: "SET_USER", payload: response.data.user });
+      console.log("User fetched successfully");
+    } catch (error) {
+      console.error("Failed to fetch user", error);
+    }
+  };
+
   const { username, email, password, confirmPassword } = user;
 
   const handleChange = (e) => {
@@ -39,6 +52,7 @@ const Register = () => {
       
       const { success, message } = data;
       if (success) {
+        fetchUserData();
         handleSuccess(message);
         setTimeout(() => {
           navigate("/blogs");
@@ -209,7 +223,7 @@ const Register = () => {
             <div>
               <label className="inline-flex items-center cursor-pointer">
                 <span className="ml-2 text-sm font-semibold text-blueGray-600">
-                  Already have an account? <Link className="underline text-blue-700" to={'/login'} >Login!</Link>
+                  Already have an account? <Link className="underline text-blue-700" to='/auth/login'>Login!</Link>
                   <div 
                     href="#pablo"
                     className="text-lightBlue-500"

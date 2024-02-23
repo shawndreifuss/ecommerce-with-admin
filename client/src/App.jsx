@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Routes, Route, Navigate } from "react-router-dom";
 import { UserProvider } from './context/UserContext';
+import { useUser } from './context/UserContext';
+import axios from 'axios'
 
 // Layouts 
 import Auth from './layouts/Auth'
@@ -9,6 +11,8 @@ import Main from './layouts/Main'
 
 
 const App = () => {
+
+
 
   return (
 <UserProvider>

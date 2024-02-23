@@ -54,7 +54,6 @@ export function Home() {
                 className="text-base font-medium text-brand-500 hover:text-brand-500 dark:text-white"
                 href=" "
               >
-                <Link href=" ">Sports</Link>
               </Link>
             </li>
           </ul>

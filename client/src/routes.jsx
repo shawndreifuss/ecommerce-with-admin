@@ -6,7 +6,7 @@ import {
     ServerStackIcon,
     RectangleStackIcon,
   } from "@heroicons/react/24/solid";
-  import { Home, Profile  } from "./pages/Main";
+  import { AddPost, Home, Profile  } from "./pages/Main";
   import { Register, Login } from "./pages/auth";
   
   const icon = {
@@ -29,12 +29,12 @@ import {
           path: "/profile",
           element: <Profile />,
         },
-        // {
-        //   icon: <TableCellsIcon {...icon} />,
-        //   name: "tables",
-        //   path: "/tables",
-        //   element: <Tables />,
-        // },
+        {
+          icon: <TableCellsIcon {...icon} />,
+          name: "addBlog",
+          path: "/profile/:id/addBlog",
+          element: <AddPost />,
+        },
         // {
         //   icon: <InformationCircleIcon {...icon} />,
         //   name: "notifications",

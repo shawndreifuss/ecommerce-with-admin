@@ -9,15 +9,22 @@ import routes from "../routes";
 
 export function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  //   Get user State and pass as props to main navbar and sidebar 
+  
+  
+  
+  
+
 
   return (
     <div className="min-h-screen bg-blue-gray-50/50">
-      <MainSidebar 
+       <MainSidebar 
         routes={routes}
+        
         sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}
-      />
+      /> 
       <div className="p-4 xl:ml-80">
-        <MainNavbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}/>
+      <MainNavbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}  />  
         {/* Chat Button to add here */}
         {/* <IconButton
           size="lg"
@@ -33,7 +40,7 @@ export function Dashboard() {
             ({ layout, pages }) =>
               layout === "main" &&
               pages.map(({ path, element }) => (
-                <Route exact path={path} element={element} />
+                <Route exact path={path} element={element}   />
               ))
           )}
         </Routes>

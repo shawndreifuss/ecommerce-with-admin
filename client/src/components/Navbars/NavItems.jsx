@@ -29,7 +29,6 @@ import {
       </li>
        <li>
        <Typography
-         as="a"
          href={user ? `/profile/${user._id}` : '/blogs'}
          variant="paragraph"
          className="flex items-center gap-2 font-medium"

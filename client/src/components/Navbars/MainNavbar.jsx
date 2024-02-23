@@ -7,19 +7,23 @@ import { RiMoonFill, RiSunFill } from "react-icons/ri";
 import Dropdown from '../Dropdown/Dropdown';
 import { IoMdNotificationsOutline, IoMdInformationCircleOutline } from "react-icons/io";
 import { BsArrowBarUp } from "react-icons/bs";
+import { useUser } from '../../context/UserContext';
 
 
 function MainNavbar({ sidebarOpen, setSidebarOpen }) {
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [darkmode, setDarkmode] = useState(false);
-
+  
+const { state } = useUser();
+const { user } = state;
+  
 
     return (
       <>
       <nav className="sticky top-4 z-40 flex flex-row flex-wrap items-center justify-between rounded-xl bg-white/10 p-2 backdrop-blur-xl dark:bg-[#0b14374d]">
         <div className="ml-[6px]">
           <div className="h-6 w-[224px] pt-1">
-            <a
+            <Link
               className="text-sm font-normal text-navy-700 hover:underline dark:text-white dark:hover:text-white"
               href=" "
             >
@@ -28,7 +32,7 @@ function MainNavbar({ sidebarOpen, setSidebarOpen }) {
                 {" "}
                 /{" "}
               </span>
-            </a>
+            </Link>
             <Link
               className="text-sm font-normal capitalize text-navy-700 hover:underline dark:text-white dark:hover:text-white"
               to="#"
@@ -142,27 +146,24 @@ function MainNavbar({ sidebarOpen, setSidebarOpen }) {
                   }}
                   className="mb-2 aspect-video w-full rounded-lg"
                 />
-                <a
-                  target="blank"
+                <Link
                   href="https://horizon-ui.com/pro?ref=live-free-tailwind-react"
                   className="px-full linear flex cursor-pointer items-center justify-center rounded-xl bg-brand-500 py-[11px] font-bold text-white transition duration-200 hover:bg-brand-600 hover:text-white active:bg-brand-700 dark:bg-brand-400 dark:hover:bg-brand-300 dark:active:bg-brand-200"
                 >
                   Buy Horizon UI PRO
-                </a>
-                <a
-                  target="blank"
+                </Link>
+                <Link
                   href="https://horizon-ui.com/docs-tailwind/docs/react/installation?ref=live-free-tailwind-react"
                   className="px-full linear flex cursor-pointer items-center justify-center rounded-xl border py-[11px] font-bold text-navy-700 transition duration-200 hover:bg-gray-200 hover:text-navy-700 dark:!border-white/10 dark:text-white dark:hover:bg-white/20 dark:hover:text-white dark:active:bg-white/10"
                 >
                   See Documentation
-                </a>
-                <a
-                  target="blank"
+                </Link>
+                <Link
                   href="https://horizon-ui.com/?ref=live-free-tailwind-react"
                   className="hover:bg-black px-full linear flex cursor-pointer items-center justify-center rounded-xl py-[11px] font-bold text-navy-700 transition duration-200 hover:text-navy-700 dark:text-white dark:hover:text-white"
                 >
                   Try Horizon Free
-                </a>
+                </Link>
               </div>
             }
             classNames={"py-2 top-6 -left-[250px] md:-left-[330px] w-max"}
@@ -190,8 +191,8 @@ function MainNavbar({ sidebarOpen, setSidebarOpen }) {
           <Dropdown
             button={
               <img
-                className="h-10 w-10 rounded-full"
-                src='https://cdn.vectorstock.com/i/preview-1x/17/61/male-avatar-profile-picture-vector-10211761.jpg'
+                className="h-10 w-10 rounded-full" 
+                src={user?.avatar ? `${user.avatar}` : 'https://cdn.vectorstock.com/i/preview-1x/17/61/male-avatar-profile-picture-vector-10211761.jpg' }
                 alt="Elon Musk"
               />
             }
@@ -207,24 +208,24 @@ function MainNavbar({ sidebarOpen, setSidebarOpen }) {
                 <div className="h-px w-full bg-gray-200 dark:bg-white/20 " />
   
                 <div className="flex flex-col p-4">
-                  <a
+                  <Link
                     href=" "
                     className="text-sm text-gray-800 dark:text-white hover:dark:text-white"
                   >
                     Profile Settings
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href=" "
                     className="mt-3 text-sm text-gray-800 dark:text-white hover:dark:text-white"
                   >
                     Newsletter Settings
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href=" "
                     className="mt-3 text-sm font-medium text-red-500 hover:text-red-500 transition duration-150 ease-out hover:ease-in"
                   >
                     Log Out
-                  </a>
+                  </Link>
                 </div>
               </div>
             }

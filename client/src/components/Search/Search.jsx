@@ -9,7 +9,6 @@ function Search({
   setModalOpen
   
 }) {
-  console.log('Search.jsx, modalOpen: ', modalOpen)
 
   const modalContent = useRef(null);
   const searchInput = useRef(null);

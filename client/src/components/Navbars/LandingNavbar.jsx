@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useUser } from "../../context/UserContext";
-import NavItems from './NavItems'
+import NavItems from "./NavItems";
 import {
   Navbar as MTNavbar,
   Collapse,
@@ -9,19 +9,13 @@ import {
   IconButton,
   Typography,
 } from "@material-tailwind/react";
-import {
-  XMarkIcon,
-  Bars3Icon,
-} from "@heroicons/react/24/solid";
-
+import { XMarkIcon, Bars3Icon } from "@heroicons/react/24/solid";
 
 function LandingNavbar() {
   const { state } = useUser();
   const { user } = state;
   const { logout } = useUser();
 
-
-  
   const [open, setOpen] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
 
@@ -68,29 +62,29 @@ function LandingNavbar() {
             isScrolling ? "text-gray-900" : "text-white"
           }`}
         >
-         <NavItems/>
+          <NavItems />
         </ul>
         <div className="hidden items-center gap-4 lg:flex">
           {!user && (
             <>
-          <Link to='/login'>
-          <Button color={isScrolling ? "gray" : "white"} variant="text">
-            Login
-          </Button>
-          </Link>
-         
-          <Link to='/register' >
-            <Button color={isScrolling ? "gray" : "white"}>Sign Up</Button>
-          </Link>
-         </> 
-         )}
+              <Link to="/login">
+                <Button color={isScrolling ? "gray" : "white"} variant="text">
+                  Login
+                </Button>
+              </Link>
+
+              <Link to="/register">
+                <Button color={isScrolling ? "gray" : "white"}>Sign Up</Button>
+              </Link>
+            </>
+          )}
         </div>
-         
-         {user && (
-           <Link to='/landing' >
-           <Button onClick={logout} color={isScrolling ? "gray" : "white"}>Logout</Button>
-         </Link>
-         )}
+
+        {user && (
+          <Button onClick={logout} color={isScrolling ? "gray" : "white"}>
+            <Link to="/landing"> Logou</Link>
+          </Button>
+        )}
         <IconButton
           variant="text"
           color={isScrolling ? "gray" : "white"}
@@ -107,22 +101,26 @@ function LandingNavbar() {
       <Collapse open={open}>
         <div className="container mx-auto mt-4 rounded-lg bg-white px-6 py-5">
           <ul className="flex flex-col gap-4 text-gray-900">
-              <NavItems user = {user}  />
+            <NavItems user={user} />
           </ul>
           <div className="mt-6 flex items-center gap-4">
-          {!user && (
-            <Link to='/login'>
-            <Button variant="text">Log in</Button>
-            </Link>
+            {!user && (
+              <Button variant="text">
+                {" "}
+                <Link to="/login">Log in</Link>
+              </Button>
             )}
-            <Link to='/register' >
-              <Button color="gray">Sign Up</Button>
-            </Link>
+
+            <Button color="gray">
+              {" "}
+              <Link to="/register">Sign Up </Link>
+            </Button>
+
             {user && (
-           <Link to='/landing' >
-           <Button onClick={logout} color={isScrolling ? "gray" : "white"}>Logout</Button>
-         </Link>
-         )}
+              <Button onClick={logout} color={isScrolling ? "gray" : "white"}>
+                <Link to="/landing">Logout</Link>
+              </Button>
+            )}
           </div>
         </div>
       </Collapse>
