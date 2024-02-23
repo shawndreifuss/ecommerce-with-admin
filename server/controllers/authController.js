@@ -169,9 +169,7 @@ module.exports.ChangePassword = async (req, res, next) => {
 // Load User 
 module.exports.GetMe = async (req, res, next) => {
   try {
-    console.log(req.user)
     const user = await User.findById(req.user.id).populate("settings").lean();
-    console.log(user)
     if(!user) {
       return next("User not found");
     }

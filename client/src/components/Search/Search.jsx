@@ -7,7 +7,9 @@ function Search({
   searchId,
   modalOpen,
   setModalOpen
+  
 }) {
+  console.log('Search.jsx, modalOpen: ', modalOpen)
 
   const modalContent = useRef(null);
   const searchInput = useRef(null);
@@ -66,7 +68,7 @@ function Search({
       >
         <div
           ref={modalContent}
-          className="bg-white dark:bg-slate-800 border border-transparent dark:border-slate-700 overflow-auto max-w-2xl w-full max-h-full rounded shadow-lg"
+          className="bg-white z-50 dark:bg-slate-800 border border-transparent dark:border-slate-700 overflow-auto max-w-2xl w-full max-h-full rounded shadow-lg"
         >
           {/* Search form */}
           <form className="border-b border-slate-200 dark:border-slate-700">

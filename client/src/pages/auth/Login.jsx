@@ -15,6 +15,8 @@ const Login = () => {
 
   const { dispatch } = useUser();
 
+  // TODO Seperate login and register folders and route to differnet areas 
+
 
     const fetchUserData = async () => {
       try {
@@ -26,6 +28,7 @@ const Login = () => {
         console.error('Failed to fetch user', error);
       }
     };
+  
   
     useEffect(() => {
       fetchUserData();

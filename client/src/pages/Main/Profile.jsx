@@ -19,16 +19,16 @@ import {
     PencilIcon,
   } from "@heroicons/react/24/solid";
   import { Link } from "react-router-dom";
-  import  MessageCard  from "../components/Cards/MessageCard";
-  import ProfileInfoCard from "../components/Cards/ProfileInfoCard";
-  import platformSettingsData from "../data/platform-settings-data";
-  import conversationsData from "../data/conversations-data";
-  import projectsData from "../data/projects-data";
+  import  MessageCard  from "../../components/Cards/MessageCard";
+  import ProfileInfoCard from "../../components/Cards/ProfileInfoCard";
+  import platformSettingsData from "../../data/platform-settings-data";
+  import conversationsData from "../../data/conversations-data";
+  import projectsData from "../../data/projects-data";
   
   export function Profile() {
     return (
       <>
-        <Card className="mx-3 mt-10 mb-6 lg:mx-4 border border-blue-gray-100 overscroll-none fixed top-10">
+        <Card className="mx-5  mt-20 mb-6 lg:mx-4 border border-blue-gray-100 overscroll-none fixed top-10">
           <CardBody className="p-4">
             <div className="mb-10 flex items-center justify-between flex-wrap gap-6">
               <div className="flex items-center gap-6">

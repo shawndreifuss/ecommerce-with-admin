@@ -1,35 +1,51 @@
-import React from "react";
 import { Routes, Route } from "react-router-dom";
+import {
+  ChartPieIcon,
+  UserIcon,
+  UserPlusIcon,
+  ArrowRightOnRectangleIcon,
+} from "@heroicons/react/24/solid";
+import routes from '../routes';
 
-// components
+export function Auth() {
+  const navbarRoutes = [
+    {
+      name: "dashboard",
+      path: "/dashboard/home",
+      icon: ChartPieIcon,
+    },
+    {
+      name: "profile",
+      path: "/dashboard/profile",
+      icon: UserIcon,
+    },
+    {
+      name: "sign up",
+      path: "/auth/sign-up",
+      icon: UserPlusIcon,
+    },
+    {
+      name: "sign in",
+      path: "/auth/sign-in",
+      icon: ArrowRightOnRectangleIcon,
+    },
+  ];
 
-import FooterSmall from "../components/Footers/FooterSmall";
-
-// pages
-
-import Login from "../pages/auth/Login";
-import Register from "../pages/auth/Register";
-
-export default function Auth() {
   return (
-    <>
-      <Navbar transparent />
-      <main>
-        <section className="relative w-full h-full py-40 min-h-screen">
-          <div
-            className="absolute top-0 w-full h-full bg-blueGray-800 bg-no-repeat bg-full"
-            style={{
-              backgroundImage:
-                "url('assets/img/register_bg_2.png')",v
-            }}
-          ></div>
-          <Routes>
-            <Route path="/auth/login" exact element={<Login/>} />
-            <Route path="/auth/register" exact element={<Register/>} />
-          </Routes>
-          <FooterSmall absolute />
-        </section>
-      </main>
-    </>
+    <div className="relative min-h-screen w-full">
+      <Routes>
+        {routes.map(
+          ({ layout, pages }) =>
+            layout === "auth" &&
+            pages.map(({ path, element }) => (
+              <Route exact path={path} element={element} />
+            ))
+        )}
+      </Routes>
+    </div>
   );
 }
+
+Auth.displayName = "../layout/Auth.jsx";
+
+export default Auth;

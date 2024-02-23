@@ -1,80 +1,246 @@
 import React, { useState } from 'react';
-
+import { Link } from 'react-router-dom';
 import Search from '../Search/Search';
-import Notifications from '../Dropdowns/NotificationDropdown';
-import Help from '../Dropdowns/HelpDropdown';
-import ThemeToggle from '../Theme/ThemeToggle';
-import UserMenu from '../Dropdowns/ProfileDropdown';
+import { FiAlignJustify } from "react-icons/fi";
+import { FiSearch } from "react-icons/fi";
+import { RiMoonFill, RiSunFill } from "react-icons/ri";
+import Dropdown from '../Dropdown/Dropdown';
+import { IoMdNotificationsOutline, IoMdInformationCircleOutline } from "react-icons/io";
+import { BsArrowBarUp } from "react-icons/bs";
 
 
-function Header({ sidebarOpen, setSidebarOpen }) {
+function MainNavbar({ sidebarOpen, setSidebarOpen }) {
   const [searchModalOpen, setSearchModalOpen] = useState(false);
+  const [darkmode, setDarkmode] = useState(false);
 
- 
 
-  return (
-    <header className="sticky top-0 bg-white dark:bg-[#182235] border-b border-slate-200 dark:border-slate-700 z-30">
-      <div className="px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 -mb-px">
-          {/* Header: Left side */}
-          <div className="flex">
-            {/* Hamburger button */}
-            <button
-              className="text-slate-500 hover:text-slate-600 lg:hidden"
-              aria-controls="sidebar"
-              aria-expanded={sidebarOpen}
-              onClick={(e) => {
-                e.stopPropagation();
-                setSidebarOpen(!sidebarOpen);
-              }}
+    return (
+      <>
+      <nav className="sticky top-4 z-40 flex flex-row flex-wrap items-center justify-between rounded-xl bg-white/10 p-2 backdrop-blur-xl dark:bg-[#0b14374d]">
+        <div className="ml-[6px]">
+          <div className="h-6 w-[224px] pt-1">
+            <a
+              className="text-sm font-normal text-navy-700 hover:underline dark:text-white dark:hover:text-white"
+              href=" "
             >
-              <span className="sr-only">Open sidebar</span>
-              <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <rect x="4" y="5" width="16" height="2" />
-                <rect x="4" y="11" width="16" height="2" />
-                <rect x="4" y="17" width="16" height="2" />
-              </svg>
-            </button>
+              Pages
+              <span className="mx-1 text-sm text-navy-700 hover:text-navy-700 dark:text-white">
+                {" "}
+                /{" "}
+              </span>
+            </a>
+            <Link
+              className="text-sm font-normal capitalize text-navy-700 hover:underline dark:text-white dark:hover:text-white"
+              to="#"
+            >
+              brandText
+            </Link>
           </div>
-
-          {/* Header: Right side */}
-          <div className="flex items-center space-x-3">
-            <div>
-              <button
-                className={`w-8 h-8 flex items-center justify-center bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600/80 rounded-full ml-3 ${
-                  searchModalOpen && 'bg-slate-200'
-                }`}
-                onClick={(e) => {
+          <p className="shrink text-[33px] capitalize text-navy-700 dark:text-white">
+            <Link
+              to="#"
+              className="font-bold capitalize hover:text-navy-700 dark:hover:text-white"
+            >
+              brandText
+            </Link>
+          </p>
+        </div>
+        <div className="relative mt-[3px] flex h-[61px] w-[355px] flex-grow items-center justify-around gap-2 rounded-full bg-white px-2 py-2 shadow-xl shadow-shadow-500 dark:!bg-navy-800 dark:shadow-none md:w-[365px] md:flex-grow-0 md:gap-1 xl:w-[365px] xl:gap-2">
+          <div className="flex h-full items-center rounded-full bg-[#F4F7FE] text-[#1B254B] dark:bg-navy-900 dark:text-white xl:w-[225px]">
+            
+          <p className="pl-3 pr-2 text-xl" onClick={(e) => {
+                  e.stopPropagation();
+                  setSearchModalOpen(true);
+                }}
+                aria-controls="search-modal">
+            <FiSearch className="h-4 w-4 text-gray-400 dark:text-white" />
+          </p>
+          <input
+          onClick={(e) => {
                   e.stopPropagation();
                   setSearchModalOpen(true);
                 }}
                 aria-controls="search-modal"
-              >
-                <span className="sr-only">Search</span>
-                <svg className="w-4 h-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    className="fill-current text-slate-500 dark:text-slate-400"
-                    d="M7 14c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5z"
-                  />
-                  <path
-                    className="fill-current text-slate-400 dark:text-slate-500"
-                    d="M15.707 14.293L13.314 11.9a8.019 8.019 0 01-1.414 1.414l2.393 2.393a.997.997 0 001.414 0 .999.999 0 000-1.414z"
-                  />
-                </svg>
-              </button>
-              <Search id="search-modal" searchId="search" modalOpen={searchModalOpen} setModalOpen={setSearchModalOpen} />
-            </div>
-             <Notifications align="right" />
-          <Help align="right" />
-           <ThemeToggle />
-            {/*  Divider */}
-            <hr className="w-px h-6 bg-slate-200 dark:bg-slate-700 border-none" />
-            <UserMenu align="right" /> 
+            type="text"
+            placeholder="Search..."
+            className="block h-full w-full rounded-full bg-[#F4F7FE] text-sm font-medium text-[#1B254B] outline-none border-none placeholder:!text-gray-400 dark:bg-navy-900 dark:text-white dark:placeholder:!text-white sm:w-fit"
+          />
+             
+            
           </div>
+          
+          <span
+            className="flex cursor-pointer text-xl text-gray-600 dark:text-white xl:hidden"
+            onClick={sidebarOpen ? () => setSidebarOpen(false) : () => setSidebarOpen(true)}
+          >
+            <FiAlignJustify className="h-5 w-5" />
+          </span>
+          {/* start Notification */}
+          <Dropdown
+            button={
+              <p className="cursor-pointer">
+                <IoMdNotificationsOutline className="h-4 w-4 text-gray-600 dark:text-white" />
+              </p>
+            }
+            animation="origin-[65%_0%] md:origin-top-right transition-all duration-300 ease-in-out"
+            children={
+              <div className="flex w-[360px] flex-col gap-3 rounded-[20px] bg-white p-4 shadow-xl shadow-shadow-500 dark:!bg-navy-700 dark:text-white dark:shadow-none sm:w-[460px]">
+                <div className="flex items-center justify-between">
+                  <p className="text-base font-bold text-navy-700 dark:text-white">
+                    Notification
+                  </p>
+                  <p className="text-sm font-bold text-navy-700 dark:text-white">
+                    Mark all read
+                  </p>
+                </div>
+  
+                <button className="flex w-full items-center">
+                  <div className="flex h-full w-[85px] items-center justify-center rounded-xl bg-gradient-to-b from-brandLinear to-brand-500 py-4 text-2xl text-white">
+                    <BsArrowBarUp />
+                  </div>
+                  <div className="ml-2 flex h-full w-full flex-col justify-center rounded-lg px-1 text-sm">
+                    <p className="mb-1 text-left text-base font-bold text-gray-900 dark:text-white">
+                      New Update: Horizon UI Dashboard PRO
+                    </p>
+                    <p className="font-base text-left text-xs text-gray-900 dark:text-white">
+                      A new update for your downloaded item is available!
+                    </p>
+                  </div>
+                </button>
+  
+                <button className="flex w-full items-center">
+                  <div className="flex h-full w-[85px] items-center justify-center rounded-xl bg-gradient-to-b from-brandLinear to-brand-500 py-4 text-2xl text-white">
+                    <BsArrowBarUp />
+                  </div>
+                  <div className="ml-2 flex h-full w-full flex-col justify-center rounded-lg px-1 text-sm">
+                    <p className="mb-1 text-left text-base font-bold text-gray-900 dark:text-white">
+                      New Update: Horizon UI Dashboard PRO
+                    </p>
+                    <p className="font-base text-left text-xs text-gray-900 dark:text-white">
+                      A new update for your downloaded item is available!
+                    </p>
+                  </div>
+                </button>
+              </div>
+            }
+            classNames={"py-2 top-4 -left-[230px] md:-left-[440px] w-max"}
+          />
+          {/* start Horizon PRO */}
+          <Dropdown
+            button={
+              <p className="cursor-pointer">
+                <IoMdInformationCircleOutline className="h-4 w-4 text-gray-600 dark:text-white" />
+              </p>
+            }
+            children={
+              <div className="flex w-[350px] flex-col gap-2 rounded-[20px] bg-white p-4 shadow-xl shadow-shadow-500 dark:!bg-navy-700 dark:text-white dark:shadow-none">
+                <div
+                  style={{
+                    backgroundImage: 'url(https://cdn.vectorstock.com/i/preview-1x/17/61/male-avatar-profile-picture-vector-10211761.jpg)',
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "cover",
+                  }}
+                  className="mb-2 aspect-video w-full rounded-lg"
+                />
+                <a
+                  target="blank"
+                  href="https://horizon-ui.com/pro?ref=live-free-tailwind-react"
+                  className="px-full linear flex cursor-pointer items-center justify-center rounded-xl bg-brand-500 py-[11px] font-bold text-white transition duration-200 hover:bg-brand-600 hover:text-white active:bg-brand-700 dark:bg-brand-400 dark:hover:bg-brand-300 dark:active:bg-brand-200"
+                >
+                  Buy Horizon UI PRO
+                </a>
+                <a
+                  target="blank"
+                  href="https://horizon-ui.com/docs-tailwind/docs/react/installation?ref=live-free-tailwind-react"
+                  className="px-full linear flex cursor-pointer items-center justify-center rounded-xl border py-[11px] font-bold text-navy-700 transition duration-200 hover:bg-gray-200 hover:text-navy-700 dark:!border-white/10 dark:text-white dark:hover:bg-white/20 dark:hover:text-white dark:active:bg-white/10"
+                >
+                  See Documentation
+                </a>
+                <a
+                  target="blank"
+                  href="https://horizon-ui.com/?ref=live-free-tailwind-react"
+                  className="hover:bg-black px-full linear flex cursor-pointer items-center justify-center rounded-xl py-[11px] font-bold text-navy-700 transition duration-200 hover:text-navy-700 dark:text-white dark:hover:text-white"
+                >
+                  Try Horizon Free
+                </a>
+              </div>
+            }
+            classNames={"py-2 top-6 -left-[250px] md:-left-[330px] w-max"}
+            animation="origin-[75%_0%] md:origin-top-right transition-all duration-300 ease-in-out"
+          />
+          <div
+            className="cursor-pointer text-gray-600"
+            onClick={() => {
+              if (darkmode) {
+                document.body.classList.remove("dark");
+                setDarkmode(false);
+              } else {
+                document.body.classList.add("dark");
+                setDarkmode(true);
+              }
+            }}
+          >
+            {darkmode ? (
+              <RiSunFill className="h-4 w-4 text-gray-600 dark:text-white" />
+            ) : (
+              <RiMoonFill className="h-4 w-4 text-gray-600 dark:text-white" />
+            )}
+          </div>
+          {/* Profile & Dropdown */}
+          <Dropdown
+            button={
+              <img
+                className="h-10 w-10 rounded-full"
+                src='https://cdn.vectorstock.com/i/preview-1x/17/61/male-avatar-profile-picture-vector-10211761.jpg'
+                alt="Elon Musk"
+              />
+            }
+            children={
+              <div className="flex w-56 flex-col justify-start rounded-[20px] bg-white bg-cover bg-no-repeat shadow-xl shadow-shadow-500 dark:!bg-navy-700 dark:text-white dark:shadow-none">
+                <div className="p-4">
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-bold text-navy-700 dark:text-white">
+                      👋 Hey, Shawn
+                    </p>{" "}
+                  </div>
+                </div>
+                <div className="h-px w-full bg-gray-200 dark:bg-white/20 " />
+  
+                <div className="flex flex-col p-4">
+                  <a
+                    href=" "
+                    className="text-sm text-gray-800 dark:text-white hover:dark:text-white"
+                  >
+                    Profile Settings
+                  </a>
+                  <a
+                    href=" "
+                    className="mt-3 text-sm text-gray-800 dark:text-white hover:dark:text-white"
+                  >
+                    Newsletter Settings
+                  </a>
+                  <a
+                    href=" "
+                    className="mt-3 text-sm font-medium text-red-500 hover:text-red-500 transition duration-150 ease-out hover:ease-in"
+                  >
+                    Log Out
+                  </a>
+                </div>
+              </div>
+            }
+            classNames={"py-2 top-8 -left-[180px] w-max"}
+          />
         </div>
-      </div>
-    </header>
-  );
-}
+      </nav>
+        <Search id="search-modal" searchId="search" modalOpen={searchModalOpen} setModalOpen={setSearchModalOpen} />
+        </>
+    );
+  };
+  
+  export default MainNavbar;
 
-export default Header;
+
+
+
+
+
