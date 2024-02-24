@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Routes, Route, Navigate } from "react-router-dom";
 import { UserProvider } from './context/UserContext';
-import { useUser } from './context/UserContext';
-import axios from 'axios'
+
 
 // Layouts 
 import Auth from './layouts/Auth'
@@ -17,9 +16,9 @@ const App = () => {
   return (
 <UserProvider>
 <Routes>
-      <Route path="/main/*" element={<Main />} />
+       <Route path="/main/*" element={<Main />} />
       <Route path="/auth/*" element={<Auth />} />
-      <Route path="*" element={<Navigate to="/main/home" replace />} />
+      <Route path="*" element={<Navigate to="/main/home" replace />} /> 
     </Routes>
   </UserProvider>
   )

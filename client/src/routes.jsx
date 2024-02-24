@@ -32,7 +32,7 @@ import {
         {
           icon: <TableCellsIcon {...icon} />,
           name: "addBlog",
-          path: "/profile/:id/addBlog",
+          path: "/addBlog",
           element: <AddPost />,
         },
         // {

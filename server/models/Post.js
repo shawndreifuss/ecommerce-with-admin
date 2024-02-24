@@ -3,25 +3,38 @@ const { Schema } = mongoose;
 
 
 const postSchema = new mongoose.Schema({
+    author:{
+        type: String,
+        required: true
+    },
     title: { 
         type: String, 
         required: true 
     },
-    body: { 
+    category: {
+        type: String,
+        
+    },
+    description: { 
         type: String, 
         required: true 
     },
-    thumbnail: { 
+    tags: {
+        type: Array,
+        
+    },
+    body: { 
         type: String, 
+        required: true,
+
+    },
+    img: { 
+        type: String
         
     },
     tags: { 
-        type: Array, 
-        
-    },
-    images: [{
         type: Array,
-    }],
+    },
     userId: { 
         type: Schema.Types.ObjectId, 
         ref: 'User', 
