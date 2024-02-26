@@ -1,6 +1,6 @@
+import React from 'react'
 
-
-const Banner1 = () => {
+const Banner = () => {
   return (
     <div
       className="flex w-full flex-col rounded-[20px] bg-cover px-[30px] py-[30px] md:px-[64px] md:py-[56px]"
@@ -28,7 +28,7 @@ const Banner1 = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Banner1;
+export default Banner

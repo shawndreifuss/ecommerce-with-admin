@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import MainNavbar from '../components/Navbars/MainNavbar';
-import MainSidebar from '../components/Sidebars/MainSidebar';
-import Profile from '../pages/Main/Profile'
+import MainNavbar from '../../components/Navbars/MainNavbar';
+import MainSidebar from '../../components/Sidebars/MainSidebar';
+import Profile from '../Main/Profile'
 
 
 

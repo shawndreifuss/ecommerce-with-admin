@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "UserSettings",
   },
-  bookmarks: [
+  favorites: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Post",

@@ -6,7 +6,7 @@ import {
   CardBody,
 } from "@material-tailwind/react";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import BlogPostCard from "../components/Cards/BlogpostCard"
+import BlogPostCard from "../../components/Cards/BlogpostCard"
 
 
 const BLOG_POSTS = [

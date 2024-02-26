@@ -1,11 +1,15 @@
-const { GetAllPosts, GetPostById, CreatePost, UpdatePost, DeletePost } = require('../../controllers/postController');
+const { GetAllPosts, GetPostById, CreatePost, UpdatePost, DeletePost, LikePost, UnlikePost, isLiked  } = require('../../controllers/postController');
 const router = require('express').Router();
 
 router.get('/', GetAllPosts);
-router.get('/:id', GetPostById);
+router.get('/:postId', GetPostById);
 router.post('/', CreatePost);
-router.put('/:id', UpdatePost);
-router.delete('/:id', DeletePost);
+router.put('/:postId', UpdatePost);
+router.delete('/:postId', DeletePost);
+router.post('/like', LikePost);
+router.post('/unlike', UnlikePost);
+router.get('/isliked/:postId', isLiked);
+
 
 
 module.exports = router;

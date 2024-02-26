@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, NavLink } from "react-router-dom";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { useUser } from "../../context/UserContext";
+
 import {
   Avatar,
   Button,
@@ -12,6 +14,11 @@ import routes from "../../routes";
 export function MainSidebar({ sidebarOpen, setSidebarOpen }) {
   const trigger = useRef(null);
   const sidebar = useRef(null);
+
+  const { state } = useUser()
+  const { user } = state
+  console.log(user)
+
 
   const storedSidebarExpanded = localStorage.getItem('sidebar-expanded');
   const [sidebarExpanded, setSidebarExpanded] = useState(storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true');
@@ -117,6 +124,25 @@ export function MainSidebar({ sidebarOpen, setSidebarOpen }) {
                 </NavLink>
               </li>
             ))}
+            <NavLink to={`/main/profile/${user?._id}`}>
+                  {({ isActive }) => (
+                    <li>
+                    <Button
+                      variant={isActive ? "gradient" : "text"}
+                      className="flex items-center gap-4 px-4 capitalize"
+                      fullWidth
+                    >
+                     icon
+                      <Typography
+                        color="inherit"
+                        className="font-medium capitalize"
+                      >
+                        Profile
+                      </Typography>
+                    </Button>
+                    </li>
+                  )}
+                </NavLink>
           </ul>
         ))}
       </div>

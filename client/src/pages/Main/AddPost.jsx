@@ -1,22 +1,23 @@
-import React, { useEffect } from "react";
-import { Card, CardBody } from "@material-tailwind/react";
-import Categories from "../../components/Cards/Categories";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useUser } from "../../context/UserContext";
-import { MdFileUpload } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
+
+//  Component Imports 
 import LayoutCard from "../../components/Cards/LayoutCard";
 import CardMenu from "../../components/Cards/CardMenu";
-import Upload from "../../components/Upload/Upload";
-import General from "../../components/General";
+import Categories from "../../components/Cards/Categories";
 import Notifications from "../../components/Notifications";
-import { IconButton } from "@material-tailwind/react";
-import { Cog6ToothIcon } from "@heroicons/react/20/solid";
+
+//  Style Icons 
 import { Button } from "@material-tailwind/react";
 import { toast, ToastContainer } from "react-toastify";
-
+import { MdFileUpload } from "react-icons/md";
 
 const addPost = () => {
+  const Navigate = useNavigate();
+
+  // Use State to get post data 
   const [img, setImg] = useState(null);
   const [imgUrl, setImgUrl] = useState("");
   const [title, setTitle] = useState("");
@@ -24,8 +25,6 @@ const addPost = () => {
   const [body, setBody] = useState("");
   const [category, setCategory] = useState("");
   const [tags, setTags] = useState([]);
-  const [isCategorySelected, setIsCategorySelected] = useState(false);
-  const [isTagSelected, setIsTagSelected] = useState(false);
   const { state } = useUser();
   const { user } = state;
   const [loading, setLoading] = useState(false);
@@ -47,7 +46,7 @@ const addPost = () => {
 
     try {
       const cloudName = "dmvmccose";
-      const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
+      const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload/`;
       const res = await axios.post(url, data);
       const secure_url = res.data.url;
       setImgUrl(secure_url);
@@ -84,7 +83,7 @@ const addPost = () => {
 
         });
   };
-
+//  Handle data post request
   const handleData = async () => {
     const data = {
       img: imgUrl,
@@ -105,6 +104,7 @@ const addPost = () => {
     }
   };
 
+  // Handle Submit and reroute to home page 
   const handleSubmit = () => {
     if (
      
@@ -126,6 +126,9 @@ const addPost = () => {
     setLoading(true);
     handleSuccess();
     setTimeout(() => {
+      
+      Navigate("/main/home ");
+      location.reload();
     setLoading(false);
     }, 5000);
     
@@ -146,6 +149,7 @@ const addPost = () => {
         </IconButton> */}
         {loading ? (
         <div className="fixed top-0 left-0 w-screen h-screen bg-white bg-opacity-50 z-50 flex items-center justify-center">
+        Loading...
           </div>
           ) : (
         <form onSubmit={handleSubmit}>
@@ -239,10 +243,10 @@ const addPost = () => {
        
     
       <div className="w-full h-full object-fit h-max-60 w-full  bg-lightPrimary dark:!bg-navy-700 2xl:col-span-6"> 
-    {!imgUrl ? (
+    {imgUrl ? (
         <img 
         className="max-h-[22rem] w-full rounded-xl object-cover"
-        src='https://res.cloudinary.com/dmvmccose/image/upload/v1708734639/images/ydl44ulk62pr6cdzv93w.png'/>
+        src={`${imgUrl}`}/>
         ) : (
    <>
       <label htmlFor="file"> 

@@ -8,10 +8,13 @@ import {
   } from "@heroicons/react/24/solid";
   import { AddPost, Home, Profile  } from "./pages/Main";
   import { Register, Login } from "./pages/auth";
+import SinglePost from "./pages/Main/SinglePost";
   
   const icon = {
     className: "w-5 h-5 text-inherit",
   };
+
+
   
   export const routes = [
     {
@@ -23,24 +26,19 @@ import {
           path: "/home",
           element: <Home />,
         },
-        {
-          icon: <UserCircleIcon {...icon} />,
-          name: "profile",
-          path: "/profile",
-          element: <Profile />,
-        },
+        
         {
           icon: <TableCellsIcon {...icon} />,
           name: "addBlog",
           path: "/addBlog",
           element: <AddPost />,
         },
-        // {
-        //   icon: <InformationCircleIcon {...icon} />,
-        //   name: "notifications",
-        //   path: "/notifications",
-        //   element: <Notifications />,
-        // },
+        {
+          icon: <InformationCircleIcon {...icon} />,
+          name: "viewing",
+          path: "/viewing/post/:postId",
+          element: <SinglePost />,
+        },
       ],
     },
     {
