@@ -1,16 +1,123 @@
+import { useState, useEffect } from 'react';
 import LayoutCard from '../components/Cards/LayoutCard';
 import CardMenu from "../components/Cards/CardMenu";
 import Switch from "../components/Switch/Switch";
 import React from "react";
 
-function Notification() {
+
+const TAGS = [
+    {
+        id: 1,
+        name: 'Lifestyle',
+    },
+    {
+        id: 2,
+        name: 'Fitness',
+    },
+    { 
+        id: 3,
+        name: 'Money',
+    }, 
+    {
+        id: 4,
+        name: 'Health',
+    },
+    {
+        id: 5,
+        name: 'Travel',
+    },
+    {
+        id: 6,
+        name: 'New launches',
+    },
+    {
+        id: 7,
+        name: 'Monthly product changes',
+    },
+    {
+        id: 8,
+        name: 'Newsletter',
+    },
+    {
+        id: 9,
+        name: 'Software',
+    },
+    {
+        id: 10,
+        name: 'Hardware',
+    },
+    {
+        id: 11,
+        name: 'Jobs',
+    },
+    {
+        id: 12,
+        name: 'Activity',
+    },
+    {
+        id: 13,
+        name: 'Music',
+    },
+    {
+        id: 14,
+        name: 'Movies',
+    },
+    {
+        id: 15,
+        name: 'Shows',
+    },
+    {
+        id: 16,
+        name: 'Books',
+    }
+  ];
+    
+
+
+
+function Notification({tags, setTags}) {
+
+const [ filterTags, setFilterTags ] = useState([])
+const [tagSearch, setTagSearch] = useState('')  
+
+  const handleClick = (tag) => {
+    setTags(currentTags =>{
+      if(currentTags.length === 3 &  !currentTags.includes(tag) ){
+        return (
+          {alert: "You can only select 3 tags"}
+        )
+      }
+      else if(currentTags.includes(tag)){
+        return currentTags.filter((item) => item !== tag)
+    }  return (  
+    [...currentTags, tag]
+    )
+    });
+  };
+
+  
+  useEffect(() => {
+    if(tagSearch ==='') {
+        setFilterTags(TAGS)
+    }
+    else {
+        setFilterTags(TAGS.filter(tag => tag.name.toLowerCase().includes(tagSearch.toLowerCase())))
+        const results = TAGS.filter(tag => tag.name.toLowerCase().includes(tagSearch.toLowerCase()))
+        setFilterTags(results)
+    }
+}
+, [tagSearch])
+
+
+  
+
   return (
     <div className='!z-5 w-96 h-full relative flex flex-col rounded-[20px] bg-white bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:text-white dark:shadow-none'>
       <div className="relative mb-3 flex items-center justify-between pt-1">
         <h4 className="text-xl ml-5 font-bold text-navy-700 dark:text-white">
-          Notifications
+          Add Tags: 
         </h4>
-        <CardMenu />
+        <h6></h6>
       </div>
       <div className="flex justify-center w-[90%] mx-auto mb-10">
                 <div className="flex items-center w-full mx-auto ">
@@ -36,201 +143,37 @@ function Notification() {
                       </svg>
                     </div>
                     <input
+                    onChange={(e) => setTagSearch(e.target.value)}
                       type="text"
                       id="simple-search"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="Search branch name..."
+                      placeholder="Search for 3 tags..."
                     />
                   </div>
                 </div>
+                
                 </div>
-      <div className="flex flex-col mx-auto h-96 overflow-y-scroll p-5">
+                <br />
+                {!tags && "Select 3 tags" }
+           {tags[0] ? `${tags[0]}` : ''} 
+           {tags[1] ? `, ${tags[1]}` : ''}
+           {tags[2] ? `, ${tags[2]}` : ''}
+      <div className="flex flex-col w-full  mr-auto h-96 overflow-y-scroll p-5">
         {/* the custom checkbox desing added in src/index.js */}
-        <div className="mt-3 flex items-center gap-3">
-          <Switch id="switch1" />
+        {filterTags.map((tag) => (
+        <div className="mt-3 flex items-center gap-3 block" onClick={() => handleClick(tag.name)}>
+          <Switch id="switch1" tags={tags}   />
           <label
             htmlFor="checkbox1"
             className="text-base font-medium text-navy-700 dark:text-white"
           >
-            Item comment notifications
+            {tag.name}
           </label>
         </div>
-
-        <div className="mt-4 flex items-center gap-3">
-          <Switch id="switch2" />
-          <label
-            htmlFor="checkbox2"
-            className="text-base font-medium text-navy-700 dark:text-white"
-          >
-            Buyer review notifications
-          </label>
-        </div>
-
-        <div className="mt-4 flex items-center gap-3">
-          <Switch id="switch3" />
-          <label
-            htmlFor="checkbox3"
-            className="text-base font-medium text-navy-700 dark:text-white"
-          >
-            Rating reminders notifications
-          </label>
-        </div>
-
-        <div className="mt-4 flex items-center gap-3">
-          <Switch id="switch4" />
-          <label
-            htmlFor="checkbox4"
-            className="text-base font-medium text-navy-700 dark:text-white"
-          >
-            Meetups near you notifications
-          </label>
-        </div>
-
-        <div className="mt-4 flex items-center gap-3">
-          <Switch id="switch5" />
-          <label
-            htmlFor="checkbox5"
-            className="text-base font-medium text-navy-700 dark:text-white"
-          >
-            Company news notifications
-          </label>
-        </div>
-
-        <div className="mt-4 flex items-center gap-3">
-          <Switch id="switch6" />
-          <label
-            htmlFor="checkbox6"
-            className="text-base font-medium text-navy-700 dark:text-white"
-          >
-            New launches and projects
-          </label>
-        </div>
-        <div className="mt-4 flex items-center gap-3">
-          <Switch id="switch7" />
-          <label
-            htmlFor="checkbox7"
-            className="text-base font-medium text-navy-700 dark:text-white"
-          >
-            Monthly product changes
-          </label>
-        </div>
-        <div className="mt-4 flex items-center gap-3">
-          <Switch id="switch8" />
-          <label
-            htmlFor="checkbox8"
-            className="text-base font-medium text-navy-700 dark:text-white"
-          >
-            Subscribe to newsletter
-          </label>
-        </div>
-        <div className="mt-4 flex items-center gap-3">
-          <Switch id="switch8" />
-          <label
-            htmlFor="checkbox8"
-            className="text-base font-medium text-navy-700 dark:text-white"
-          >
-            Email me when someone follows me
-          </label>
-        </div>
-        <div className="mt-4 flex items-center gap-3">
-          <Switch id="switch8" />
-          <label
-            htmlFor="checkbox8"
-            className="text-base font-medium text-navy-700 dark:text-white"
-          >
-            Email me when someone follows me
-          </label>
-        </div><div className="mt-4 flex items-center gap-3">
-          <Switch id="switch8" />
-          <label
-            htmlFor="checkbox8"
-            className="text-base font-medium text-navy-700 dark:text-white"
-          >
-            Email me when someone follows me
-          </label>
-        </div><div className="mt-4 flex items-center gap-3">
-          <Switch id="switch8" />
-          <label
-            htmlFor="checkbox8"
-            className="text-base font-medium text-navy-700 dark:text-white"
-          >
-            Email me when someone follows me
-          </label>
-        </div><div className="mt-4 flex items-center gap-3">
-          <Switch id="switch8" />
-          <label
-            htmlFor="checkbox8"
-            className="text-base font-medium text-navy-700 dark:text-white"
-          >
-            Email me when someone follows me
-          </label>
-        </div><div className="mt-4 flex items-center gap-3">
-          <Switch id="switch8" />
-          <label
-            htmlFor="checkbox8"
-            className="text-base font-medium text-navy-700 dark:text-white"
-          >
-            Email me when someone follows me
-          </label>
-        </div><div className="mt-4 flex items-center gap-3">
-          <Switch id="switch8" />
-          <label
-            htmlFor="checkbox8"
-            className="text-base font-medium text-navy-700 dark:text-white"
-          >
-            Email me when someone follows me
-          </label>
-        </div><div className="mt-4 flex items-center gap-3">
-          <Switch id="switch8" />
-          <label
-            htmlFor="checkbox8"
-            className="text-base font-medium text-navy-700 dark:text-white"
-          >
-            Email me when someone follows me
-          </label>
-        </div><div className="mt-4 flex items-center gap-3">
-          <Switch id="switch8" />
-          <label
-            htmlFor="checkbox8"
-            className="text-base font-medium text-navy-700 dark:text-white"
-          >
-            Email me when someone follows me
-          </label>
-        </div><div className="mt-4 flex items-center gap-3">
-          <Switch id="switch8" />
-          <label
-            htmlFor="checkbox8"
-            className="text-base font-medium text-navy-700 dark:text-white"
-          >
-            Email me when someone follows me
-          </label>
-        </div><div className="mt-4 flex items-center gap-3">
-          <Switch id="switch8" />
-          <label
-            htmlFor="checkbox8"
-            className="text-base font-medium text-navy-700 dark:text-white"
-          >
-            Email me when someone follows me
-          </label>
-        </div><div className="mt-4 flex items-center gap-3">
-          <Switch id="switch8" />
-          <label
-            htmlFor="checkbox8"
-            className="text-base font-medium text-navy-700 dark:text-white"
-          >
-            Email me when someone follows me
-          </label>
-        </div><div className="mt-4 flex items-center gap-3">
-          <Switch id="switch8" />
-          <label
-            htmlFor="checkbox8"
-            className="text-base font-medium text-navy-700 dark:text-white"
-          >
-            Email me when someone follows me
-          </label>
-        </div>
+        ))}
       </div>
     </div>
+
   );
 }
 

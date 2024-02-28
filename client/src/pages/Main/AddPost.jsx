@@ -28,6 +28,7 @@ const addPost = () => {
   const { state } = useUser();
   const { user } = state;
   const [loading, setLoading] = useState(false);
+  const [catSearch, setCatSearch] = useState("");
 
   // Get image url cloudinary
   useEffect(
@@ -158,7 +159,7 @@ const addPost = () => {
           color="purple"
           className="fixed bottom-8 right-8 z-40 rounded-full shadow-blue-gray-900/10 "
           ripple={false} 
-          type="submit"
+          type="submit"x
           
         >
           Submit
@@ -196,7 +197,8 @@ const addPost = () => {
           <div className="col-span-3 lg:!mb-0">
             <LayoutCard extra={" w-full h-96 overflow-hidden no-scrollbar p-4"}>
               <div className="flex justify-end w-full mb-10">
-                <div className="flex items-center w-full mx-auto ">
+               
+              <div className="flex items-center w-full mx-auto ">
                   <label htmlFor="simple-search" className="sr-only">
                     Search
                   </label>
@@ -219,17 +221,17 @@ const addPost = () => {
                       </svg>
                     </div>
                     <input
+                    onChange={(e) => setCatSearch(e.target.value)}
                       type="text"
                       id="simple-search"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="Search branch name..."
+                      placeholder="Search for a category..."
                      
                     />
                   </div>
                 </div>
-                <CardMenu />
               </div>
-              <Categories />
+              <Categories category={category} setCategory={setCategory} catSearch={catSearch} />
             </LayoutCard>
           </div>
           <div className="z-0 col-span-5 lg:!mb-0">
@@ -319,7 +321,8 @@ const addPost = () => {
 
             {/* Where General will go  */}
             {/* <General  title={title}  body={body}  onChange={(e) => setBody(e.target.value)} />  */}
-          </div><Notifications />
+          </div>
+          <Notifications tags={tags}  setTags={setTags} />
          
         </div>
       </div>

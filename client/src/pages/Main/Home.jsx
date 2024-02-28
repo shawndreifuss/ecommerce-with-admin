@@ -8,6 +8,7 @@ import Banner from "./Components/Banner";
 import ProfileCard from "./Components/ProfileCard";
 import RecentViewed from "./Components/RecentViewed";
 import BlogpostCard from "../../components/Cards/BlogpostCard";
+import Donate from "../../components/Cards/Donate";
 
 //  Future to remove
 const avatar1 =
@@ -20,13 +21,23 @@ const avatar3 =
 export function Home() {
   const { state } = useUser();
   const { user } = state;
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState([])
+  const [recents, setRecents] = useState([]);
+  const [trendingPosts, setTrendingPosts] = useState([]);
 
-  // Gett all posts 
+
+
+  // Get all posts 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await axios.get("http://localhost:3001/api/posts");
+        const recentfavorites = res.data;
+        recentfavorites.sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1));
+        setRecents(recentfavorites.slice(0, 3));
+       const trending = res.data
+       trending.sort((a, b) => (a.likes ? b.likes.length : 0) - (b.likes ? a.likes.length : 0));
+        setTrendingPosts(trending.slice(0, 4))
         setPosts(res.data);
       } catch (error) {
         console.log(error);
@@ -47,7 +58,7 @@ export function Home() {
           {/* NFt Header */}
           <div className="mb-4 mt-5 flex flex-col justify-between px-4 md:flex-row md:items-center">
             <h4 className="ml-1 text-2xl font-bold text-navy-700 dark:text-white">
-              Trending NFTs
+              Trending 
             </h4>
             <ul className="mt-4 flex items-center justify-between md:mt-0 md:justify-center md:!gap-5 2xl:!gap-12">
               <li>
@@ -85,34 +96,22 @@ export function Home() {
 
           {/*Trending Blog post card */}
           <div className="z-20 grid grid-cols-1 gap-5 md:grid-cols-4">
+            {trendingPosts.map((post) => {
+              return(
             <BlogpostCard
+            key={post._id}
               bidders={[avatar1, avatar2, avatar3]}
-              title="Abstract Colors"
-              author="Esthera Jackson"
-              price="0.91"
-              image="https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg"
+              title={post.title}
+              author={post.author}
+              postId={post._id}
+              userId={user ? user?._id : "60f3d1f3e6b6f3b3e8b0b3e8"}
+              likes={post.likes}
+              price={post.likes}
+              image={post?.img || "https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg"}
             />
-            <BlogpostCard
-              bidders={[avatar1, avatar2, avatar3]}
-              title="ETH AI Brain"
-              author="Nick Wilson"
-              price="0.7"
-              image="https://www.bhmpics.com/downloads/wallpaper-thiet-ke/1.3b8ad2c7b1be2caf24321c852103598a-scaled.jpg"
-            />
-            <BlogpostCard
-              bidders={[avatar1, avatar2, avatar3]}
-              title="Mesh Gradients"
-              author="Will Smith"
-              price="2.91"
-              image="https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg"
-            />
-            <BlogpostCard
-              bidders={[avatar1, avatar2, avatar3]}
-              title="Mesh Gradients"
-              author="Will Smith"
-              price="2.91"
-              image="https://www.bhmpics.com/downloads/wallpaper-thiet-ke/1.3b8ad2c7b1be2caf24321c852103598a-scaled.jpg"
-            />
+          )})}
+           
+            
           </div>
 
           {/* Recenlty Added setion */}
@@ -154,9 +153,9 @@ export function Home() {
               <ProfileCard />
             </div>
             <div>
-              <RecentViewed />
+              <RecentViewed recents={recents} bidders={[avatar1, avatar2, avatar3]} />
             </div>
-            {/* <Ads/> */}
+           <Donate />        
           </div>
         </div>
       </div>

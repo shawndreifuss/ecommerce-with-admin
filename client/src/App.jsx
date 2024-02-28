@@ -20,7 +20,7 @@ const App = () => {
        <Route path="/main/*" element={<Main />} />
       <Route path="/auth/*" element={<Auth />} />
       <Route path="/post/*" element={<SinglePost />}/>
-      {/* <Route path="*" element={<Navigate to="/main/home" replace />} />  */}
+       <Route path="*" element={<Navigate to="/main/home" replace />} />  
     </Routes>
   </UserProvider>
   )

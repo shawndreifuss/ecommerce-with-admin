@@ -1,30 +1,28 @@
 import { IoHeart, IoHeartOutline } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 
 
 
 
 
-
-
-
-
-const BlogpostCard = ({ title, author, image, bidders, userId, postId  }) => {
+const BlogpostCard = ({ title, author, image,likes, bidders, userId, postId  }) => {
   
 const [liked, setLiked] = useState(false);
 
 // Check if user likes post
-useEffect(() => {
-const userLike = async (postId, userId) => {
+useEffect(() => { 
   if (!userId) return;
+const userLike = async (postId, userId) => {
+ 
   try {
     const response = await axios.get(`http://localhost:3001/api/posts/isliked/${postId}`, { userId });
-    if(response.data.isLiked === true || "true"){
+   // Ensure likes is an array before calling includes
+   if (Array.isArray(response.data.post.likes) && response.data.post.likes.includes(userId)) {
     setLiked(true);
-    }else {
+   }else {
     setLiked(false);
     }
 
@@ -36,7 +34,7 @@ const userLike = async (postId, userId) => {
 } 
 userLike(postId, userId);
 }
-, [postId, userId]);
+, []);
 
 
 
@@ -51,6 +49,7 @@ userLike(postId, userId);
     const response = await axios.post('http://localhost:3001/api/posts/like', { postId, userId });
     return response.data,
     toast.success("Added to Favorites");
+
   } catch (error) {
     console.error("Error liking post:", error);
     throw error;
@@ -61,6 +60,7 @@ userLike(postId, userId);
  const unlikePost = async (postId, userId) => {
   try {
     const response = await axios.post(`http://localhost:3001/api/posts/unlike`, { postId, userId });
+    
     return response.data,
     toast.success("Removed from Favorites");
 
@@ -87,6 +87,8 @@ const handleUnlike = async () => {
     console.error("Failed to unlike the post:", error);
   }
 };
+
+
 
   return (
     <div
@@ -126,7 +128,7 @@ const handleUnlike = async () => {
 
           <div className="flex flex-row-reverse md:mt-2 lg:mt-0">
             <span className="z-0 ml-px inline-flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-[#E0E5F2] text-xs text-navy-700 dark:!border-navy-800 dark:bg-gray-800 dark:text-white">
-              +5
+              +{likes?.length || 0}
             </span>
             {bidders.map((avt, key) => (
               <span
@@ -149,7 +151,7 @@ const handleUnlike = async () => {
             to={`/main/viewing/post/${postId}`}
             className="linear rounded-[20px] bg-[#11047A] px-4 py-2 text-base font-medium text-white transition duration-200 hover:bg-[#11047A]-800 active:bg-[#11047A]-700 dark:bg-[#11047A]-400 dark:hover:bg-[#11047A]-300 dark:active:opacity-90"
           >
-            Place Bid
+            View
           </Link>
         </div>
       </div>

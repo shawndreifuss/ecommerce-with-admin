@@ -1,4 +1,4 @@
-const { GetAllPosts, GetPostById, CreatePost, UpdatePost, DeletePost, LikePost, UnlikePost, isLiked  } = require('../../controllers/postController');
+const { GetAllPosts, GetPostById, CreatePost, UpdatePost, DeletePost, LikePost, UnlikePost, addView, isLiked  } = require('../../controllers/postController');
 const router = require('express').Router();
 
 router.get('/', GetAllPosts);
@@ -9,6 +9,8 @@ router.delete('/:postId', DeletePost);
 router.post('/like', LikePost);
 router.post('/unlike', UnlikePost);
 router.get('/isliked/:postId', isLiked);
+router.post('/addview/:postId', addView);
+
 
 
 

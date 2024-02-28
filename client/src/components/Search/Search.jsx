@@ -1,26 +1,43 @@
-import React, { useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import Transition from '../../utils/Transition.jsx'
+import React, { useRef, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import Transition from "../../utils/Transition.jsx";
+import { useUser } from "../../context/UserContext";
 
-function Search({
-  id,
-  searchId,
-  modalOpen,
-  setModalOpen
-  
-}) {
-
+function Search({ id, searchId, modalOpen, setModalOpen }) {
   const modalContent = useRef(null);
   const searchInput = useRef(null);
+  const [allUsers, setAllUsers] = useState([]);
+  const [allPosts, setAllPosts] = useState([]);
+  const [search, setSearch] = useState();
+  const [findUsers, setFindUsers] = useState([]);
+  const [findPosts, setFindPosts] = useState([]);
+  const { state } = useUser();
+  const { user: currentUser } = state;
+
+  useEffect(() => {
+    const fetchAllUsers = async () => {
+      try {
+        const response = await fetch("http://localhost:3001/api/users");
+        const getPosts = await fetch("http://localhost:3001/api/posts");
+        const data = await response.json();
+        const posts = await getPosts.json();
+        setAllUsers(data);
+        setAllPosts(posts);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchAllUsers();
+  }, []);
 
   // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }) => {
-      if (!modalOpen || modalContent.current.contains(target)) return
+      if (!modalOpen || modalContent.current.contains(target)) return;
       setModalOpen(false);
     };
-    document.addEventListener('click', clickHandler);
-    return () => document.removeEventListener('click', clickHandler);
+    document.addEventListener("click", clickHandler);
+    return () => document.removeEventListener("click", clickHandler);
   });
 
   // close if the esc key is pressed
@@ -29,13 +46,43 @@ function Search({
       if (!modalOpen || keyCode !== 27) return;
       setModalOpen(false);
     };
-    document.addEventListener('keydown', keyHandler);
-    return () => document.removeEventListener('keydown', keyHandler);
+    document.addEventListener("keydown", keyHandler);
+    return () => document.removeEventListener("keydown", keyHandler);
   });
 
   useEffect(() => {
     modalOpen && searchInput.current.focus();
   }, [modalOpen]);
+
+  // Filter users and posts based on the search query
+  useEffect(() => {
+    if (search === "") {
+      setFindUsers(allUsers);
+      setFindPosts(allPosts);
+      return;
+    }
+
+    const filteredUsers = allUsers.filter(
+      (user) =>
+        user.username.toLowerCase().includes(search.toLowerCase()) ||
+        user.email.toLowerCase().includes(search.toLowerCase())
+
+      // Add other relevant user properties you want to search within
+    );
+
+    const filteredPosts = allPosts.filter(
+      (post) =>
+        post.title.toLowerCase().includes(search.toLowerCase()) ||
+        post.body.toLowerCase().includes(search.toLowerCase()) ||
+        post.author.toLowerCase().includes(search.toLowerCase())
+
+      // Add other relevant post properties you want to search within
+    );
+
+    // Set filtered
+    setFindUsers(filteredUsers);
+    setFindPosts(filteredPosts);
+  }, [search]);
 
   return (
     <>
@@ -76,13 +123,18 @@ function Search({
                 Search
               </label>
               <input
+                onChange={(e) => setSearch(e.target.value)}
                 id={searchId}
                 className="w-full dark:text-slate-300 bg-white dark:bg-slate-800 border-0 focus:ring-transparent placeholder-slate-400 dark:placeholder-slate-500 appearance-none py-3 pl-10 pr-4"
                 type="search"
                 placeholder="Search Anything…"
                 ref={searchInput}
               />
-              <button className="absolute inset-0 right-auto group" type="submit" aria-label="Search">
+              <button
+                className="absolute inset-0 right-auto group"
+                type="submit"
+                aria-label="Search"
+              >
                 <svg
                   className="w-4 h-4 shrink-0 fill-current text-slate-400 dark:text-slate-500 group-hover:text-slate-500 dark:group-hover:text-slate-400 ml-4 mr-2"
                   viewBox="0 0 16 16"
@@ -97,140 +149,57 @@ function Search({
           <div className="py-4 px-2">
             {/* Recent searches */}
             <div className="mb-3 last:mb-0">
-              <div className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase px-2 mb-2">Recent searches</div>
+              <div className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase px-2 mb-2">
+                {findPosts.length < 1 && findUsers < 1
+                  ? "No users or posts match your search"
+                  : "Find Posts and Users"}{" "}
+              </div>
               <ul className="text-sm">
-                <li>
-                  <Link
-                    className="flex items-center p-2 text-slate-800 dark:text-slate-100 hover:text-white hover:bg-indigo-500 rounded group"
-                    to="#0"
-                    onClick={() => setModalOpen(!modalOpen)}
-                  >
-                    <svg
-                      className="w-4 h-4 fill-current text-slate-400 dark:text-slate-500 group-hover:text-white group-hover:text-opacity-50 shrink-0 mr-3"
-                      viewBox="0 0 16 16"
+                {findPosts.map((post) => (
+                  <li>
+                    <Link
+                      className="flex items-center p-2 text-slate-800 dark:text-slate-100 hover:text-white hover:bg-indigo-500 rounded group"
+                      to="#0"
+                      onClick={() => setModalOpen(!modalOpen)}
                     >
-                      <path d="M15.707 14.293v.001a1 1 0 01-1.414 1.414L11.185 12.6A6.935 6.935 0 017 14a7.016 7.016 0 01-5.173-2.308l-1.537 1.3L0 8l4.873 1.12-1.521 1.285a4.971 4.971 0 008.59-2.835l1.979.454a6.971 6.971 0 01-1.321 3.157l3.107 3.112zM14 6L9.127 4.88l1.521-1.28a4.971 4.971 0 00-8.59 2.83L.084 5.976a6.977 6.977 0 0112.089-3.668l1.537-1.3L14 6z" />
-                    </svg>
-                    <span>Form Builder - 23 hours on-demand video</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="flex items-center p-2 text-slate-800 dark:text-slate-100 hover:text-white hover:bg-indigo-500 rounded group"
-                    to="#0"
-                    onClick={() => setModalOpen(!modalOpen)}
-                  >
-                    <svg
-                      className="w-4 h-4 fill-current text-slate-400 dark:text-slate-500 group-hover:text-white group-hover:text-opacity-50 shrink-0 mr-3"
-                      viewBox="0 0 16 16"
+                      <svg
+                        className="w-4 h-4 fill-current text-slate-400 dark:text-slate-500 group-hover:text-white group-hover:text-opacity-50 shrink-0 mr-3"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M15.707 14.293v.001a1 1 0 01-1.414 1.414L11.185 12.6A6.935 6.935 0 017 14a7.016 7.016 0 01-5.173-2.308l-1.537 1.3L0 8l4.873 1.12-1.521 1.285a4.971 4.971 0 008.59-2.835l1.979.454a6.971 6.971 0 01-1.321 3.157l3.107 3.112zM14 6L9.127 4.88l1.521-1.28a4.971 4.971 0 00-8.59 2.83L.084 5.976a6.977 6.977 0 0112.089-3.668l1.537-1.3L14 6z" />
+                      </svg>
+                      <img
+                        src={`${post?.img}`}
+                        alt=""
+                        className="w-4 h-4 rounded-full"
+                      />
+                      <span>{post?.title}</span>
+                    </Link>
+                  </li>
+                ))}
+
+                {findUsers.map((user) => (
+                  <li>
+                    <Link
+                      className="flex items-center p-2 text-slate-800 dark:text-slate-100 hover:text-white hover:bg-indigo-500 rounded group"
+                      to={`/main/${currentUser?._id}/profile/${user._id}`}
+                      onClick={() => setModalOpen(!modalOpen)}
                     >
-                      <path d="M15.707 14.293v.001a1 1 0 01-1.414 1.414L11.185 12.6A6.935 6.935 0 017 14a7.016 7.016 0 01-5.173-2.308l-1.537 1.3L0 8l4.873 1.12-1.521 1.285a4.971 4.971 0 008.59-2.835l1.979.454a6.971 6.971 0 01-1.321 3.157l3.107 3.112zM14 6L9.127 4.88l1.521-1.28a4.971 4.971 0 00-8.59 2.83L.084 5.976a6.977 6.977 0 0112.089-3.668l1.537-1.3L14 6z" />
-                    </svg>
-                    <span>Access Mosaic on mobile and TV</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="flex items-center p-2 text-slate-800 dark:text-slate-100 hover:text-white hover:bg-indigo-500 rounded group"
-                    to="#0"
-                    onClick={() => setModalOpen(!modalOpen)}
-                  >
-                    <svg
-                      className="w-4 h-4 fill-current text-slate-400 dark:text-slate-500 group-hover:text-white group-hover:text-opacity-50 shrink-0 mr-3"
-                      viewBox="0 0 16 16"
-                    >
-                      <path d="M15.707 14.293v.001a1 1 0 01-1.414 1.414L11.185 12.6A6.935 6.935 0 017 14a7.016 7.016 0 01-5.173-2.308l-1.537 1.3L0 8l4.873 1.12-1.521 1.285a4.971 4.971 0 008.59-2.835l1.979.454a6.971 6.971 0 01-1.321 3.157l3.107 3.112zM14 6L9.127 4.88l1.521-1.28a4.971 4.971 0 00-8.59 2.83L.084 5.976a6.977 6.977 0 0112.089-3.668l1.537-1.3L14 6z" />
-                    </svg>
-                    <span>Product Update - Q4 2021</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="flex items-center p-2 text-slate-800 dark:text-slate-100 hover:text-white hover:bg-indigo-500 rounded group"
-                    to="#0"
-                    onClick={() => setModalOpen(!modalOpen)}
-                  >
-                    <svg
-                      className="w-4 h-4 fill-current text-slate-400 dark:text-slate-500 group-hover:text-white group-hover:text-opacity-50 shrink-0 mr-3"
-                      viewBox="0 0 16 16"
-                    >
-                      <path d="M15.707 14.293v.001a1 1 0 01-1.414 1.414L11.185 12.6A6.935 6.935 0 017 14a7.016 7.016 0 01-5.173-2.308l-1.537 1.3L0 8l4.873 1.12-1.521 1.285a4.971 4.971 0 008.59-2.835l1.979.454a6.971 6.971 0 01-1.321 3.157l3.107 3.112zM14 6L9.127 4.88l1.521-1.28a4.971 4.971 0 00-8.59 2.83L.084 5.976a6.977 6.977 0 0112.089-3.668l1.537-1.3L14 6z" />
-                    </svg>
-                    <span>Master Digital Marketing Strategy course</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="flex items-center p-2 text-slate-800 dark:text-slate-100 hover:text-white hover:bg-indigo-500 rounded group"
-                    to="#0"
-                    onClick={() => setModalOpen(!modalOpen)}
-                  >
-                    <svg
-                      className="w-4 h-4 fill-current text-slate-400 dark:text-slate-500 group-hover:text-white group-hover:text-opacity-50 shrink-0 mr-3"
-                      viewBox="0 0 16 16"
-                    >
-                      <path d="M15.707 14.293v.001a1 1 0 01-1.414 1.414L11.185 12.6A6.935 6.935 0 017 14a7.016 7.016 0 01-5.173-2.308l-1.537 1.3L0 8l4.873 1.12-1.521 1.285a4.971 4.971 0 008.59-2.835l1.979.454a6.971 6.971 0 01-1.321 3.157l3.107 3.112zM14 6L9.127 4.88l1.521-1.28a4.971 4.971 0 00-8.59 2.83L.084 5.976a6.977 6.977 0 0112.089-3.668l1.537-1.3L14 6z" />
-                    </svg>
-                    <span>Dedicated forms for products</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="flex items-center p-2 text-slate-800 dark:text-slate-100 hover:text-white hover:bg-indigo-500 rounded group"
-                    to="#0"
-                    onClick={() => setModalOpen(!modalOpen)}
-                  >
-                    <svg
-                      className="w-4 h-4 fill-current text-slate-400 dark:text-slate-500 group-hover:text-white group-hover:text-opacity-50 shrink-0 mr-3"
-                      viewBox="0 0 16 16"
-                    >
-                      <path d="M15.707 14.293v.001a1 1 0 01-1.414 1.414L11.185 12.6A6.935 6.935 0 017 14a7.016 7.016 0 01-5.173-2.308l-1.537 1.3L0 8l4.873 1.12-1.521 1.285a4.971 4.971 0 008.59-2.835l1.979.454a6.971 6.971 0 01-1.321 3.157l3.107 3.112zM14 6L9.127 4.88l1.521-1.28a4.971 4.971 0 00-8.59 2.83L.084 5.976a6.977 6.977 0 0112.089-3.668l1.537-1.3L14 6z" />
-                    </svg>
-                    <span>Product Update - Q4 2021</span>
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            {/* Recent pages */}
-            <div className="mb-3 last:mb-0">
-              <div className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase px-2 mb-2">Recent pages</div>
-              <ul className="text-sm">
-                <li>
-                  <Link
-                    className="flex items-center p-2 text-slate-800 dark:text-slate-100 hover:text-white hover:bg-indigo-500 rounded group"
-                    to="#0"
-                    onClick={() => setModalOpen(!modalOpen)}
-                  >
-                    <svg
-                      className="w-4 h-4 fill-current text-slate-400 dark:text-slate-500 group-hover:text-white group-hover:text-opacity-50 shrink-0 mr-3"
-                      viewBox="0 0 16 16"
-                    >
-                      <path d="M14 0H2c-.6 0-1 .4-1 1v14c0 .6.4 1 1 1h8l5-5V1c0-.6-.4-1-1-1zM3 2h10v8H9v4H3V2z" />
-                    </svg>
-                    <span>
-                      <span className="font-medium">Messages</span> -{' '}
-                      <span className="text-slate-600 dark:text-slate-400 group-hover:text-white">Conversation / … / Mike Mills</span>
-                    </span>
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="flex items-center p-2 text-slate-800 dark:text-slate-100 hover:text-white hover:bg-indigo-500 rounded group"
-                    to="#0"
-                    onClick={() => setModalOpen(!modalOpen)}
-                  >
-                    <svg
-                      className="w-4 h-4 fill-current text-slate-400 dark:text-slate-500 group-hover:text-white group-hover:text-opacity-50 shrink-0 mr-3"
-                      viewBox="0 0 16 16"
-                    >
-                      <path d="M14 0H2c-.6 0-1 .4-1 1v14c0 .6.4 1 1 1h8l5-5V1c0-.6-.4-1-1-1zM3 2h10v8H9v4H3V2z" />
-                    </svg>
-                    <span>
-                      <span className="font-medium">Messages</span> -{' '}
-                      <span className="text-slate-600 dark:text-slate-400 group-hover:text-white">Conversation / … / Eva Patrick</span>
-                    </span>
-                  </Link>
-                </li>
+                      <svg
+                        className="w-4 h-4 fill-current text-slate-400 dark:text-slate-500 group-hover:text-white group-hover:text-opacity-50 shrink-0 mr-3"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M15.707 14.293v.001a1 1 0 01-1.414 1.414L11.185 12.6A6.935 6.935 0 017 14a7.016 7.016 0 01-5.173-2.308l-1.537 1.3L0 8l4.873 1.12-1.521 1.285a4.971 4.971 0 008.59-2.835l1.979.454a6.971 6.971 0 01-1.321 3.157l3.107 3.112zM14 6L9.127 4.88l1.521-1.28a4.971 4.971 0 00-8.59 2.83L.084 5.976a6.977 6.977 0 0112.089-3.668l1.537-1.3L14 6z" />
+                      </svg>
+                      <img
+                        src={`${user?.avatar}`}
+                        alt=""
+                        className="w-4 h-4 rounded-full"
+                      />
+                      <span>{user?.username}</span>
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>

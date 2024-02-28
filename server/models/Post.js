@@ -48,6 +48,12 @@ const postSchema = new mongoose.Schema({
         type: Schema.Types.ObjectId, 
         ref: 'Comment' 
     }],
+    views: 
+    [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    
+    }],
     likes: [{ 
         type: Schema.Types.ObjectId, 
         ref: 'User' 

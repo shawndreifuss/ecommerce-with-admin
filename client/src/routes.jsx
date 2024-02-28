@@ -33,12 +33,7 @@ import SinglePost from "./pages/Main/SinglePost";
           path: "/addBlog",
           element: <AddPost />,
         },
-        {
-          icon: <InformationCircleIcon {...icon} />,
-          name: "viewing",
-          path: "/viewing/post/:postId",
-          element: <SinglePost />,
-        },
+        
       ],
     },
     {

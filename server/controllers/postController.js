@@ -13,8 +13,9 @@ module.exports.GetAllPosts = async (req, res, next) => {
 //  Get Post by ID /api/posts/:id
 module.exports.GetPostById = async (req, res, next) => {
     try {
-        const post = await Post.findById(req.params.id);
+        const post = await Post.findById(req.params.postId);
         res.json(post);
+        console.log(post)
 
     }catch (error) {
         res.json({ message: error });
@@ -116,3 +117,25 @@ module.exports.isLiked = async (req, res, next) => {
       res.status(500).send({ message: 'Error checking like status', error });
     }
   };
+
+//   get and add views to a post    
+module.exports.addView = async (req, res, next) => {
+    const postId = req.params.postId;
+    const userId = req.body.userId;
+    try {
+        // Find the post by ID 
+        const post = await Post.findById(postId);
+        // Check if the user hasn't already viewed the post
+        if (!post.views.includes(userId)) {
+            // Add the user's ID to the views array
+            post.views.push(userId);
+            // Save the updated post 
+            await post.save();
+        }
+        // Respond with the updated post
+        res.json(post);
+    } catch (error) {
+        // If an error occurs, respond with status 500 and the error message
+        res.status(500).send(error.toString());
+    }
+};        

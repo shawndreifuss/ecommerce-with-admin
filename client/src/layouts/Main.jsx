@@ -7,6 +7,9 @@ import MainNavbar from "../components/Navbars/MainNavbar";
 import routes from "../routes";
 import { useUser } from "../context/UserContext";
 import { Profile } from "../pages/Main";
+import SinglePost from "../pages/Main/SinglePost";
+import ViewProfile from "../pages/Main/ViewProfile";
+
 
 export function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -48,6 +51,8 @@ export function Dashboard() {
               ))
           )}
           <Route path="/profile/:userId" element={<Profile />} />
+          <Route path='/viewing/post/:postId' element={<SinglePost />} />
+          <Route path='/:userId/profile/:id' element={<ViewProfile />} />
         </Routes>
         <div className="text-blue-gray-600">
           

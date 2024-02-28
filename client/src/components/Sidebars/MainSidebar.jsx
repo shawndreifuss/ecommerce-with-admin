@@ -17,7 +17,7 @@ export function MainSidebar({ sidebarOpen, setSidebarOpen }) {
 
   const { state } = useUser()
   const { user } = state
-  console.log(user)
+
 
 
   const storedSidebarExpanded = localStorage.getItem('sidebar-expanded');

@@ -24,26 +24,24 @@ import { Link } from "react-router-dom";
 import MessageCard from "../../components/Cards/MessageCard";
 import ProfileInfoCard from "../../components/Cards/ProfileInfoCard";
 import platformSettingsData from "../../data/platform-settings-data";
-import conversationsData from "../../data/conversations-data";
-import projectsData from "../../data/projects-data";
 import  {useUser } from "../../context/UserContext"
-
 export function Profile() {
   //  Get user State
   const { state } = useUser()
   const { user } = state
-
   const [posts, setPosts] = useState([])
-  console.log(posts) 
+  const [followTab, setFollowTab] = useState(true)
+  const [isFollowing, setIsFollowing] = useState([])
+  const [isFollowers, setIsFollowers] = useState([])
+ console.log(followTab)
+  
+const [activeTab, setActiveTab] = useState("myPosts");
 
-
-  const [activeTab, setActiveTab] = useState("myPosts");
-console.log(activeTab)
   const makeTabActive = (e) => {
     setActiveTab(e.target.value);
   };
 
-  console.log(activeTab)
+  
 
   useEffect(() => {
     if(!user)
@@ -51,11 +49,20 @@ console.log(activeTab)
   const getPosts = async () => {
     try {
       const response = await fetch(`http://localhost:3001/api/users/${user?._id}/posts`)
+      const userFavorites = await fetch(`http://localhost:3001/api/users/${user?._id}/favorites`)
+      const getUsers = await fetch(`http://localhost:3001/api/users/${user?._id}`)
+      const follow = await getUsers.json() 
+      setIsFollowing(follow.followers)
+      setIsFollowers(follow.following)
+      console.log(follow)
+      const favorites = await userFavorites.json()
       const posts = await response.json()
-      setPosts(posts)
-      
-
-
+      if(activeTab === "favorites"){
+        setPosts(favorites)
+      } else {
+        setPosts(posts)
+      }
+    
     } catch (error) {
       console.error('Error during logout:', error);
       // Optionally handle logout error, maybe by showing a message to the user
@@ -63,9 +70,7 @@ console.log(activeTab)
   }
   getPosts()
 
-  } , [user])
-
-  
+  } , [user, activeTab])
 
 
   return (
@@ -94,19 +99,15 @@ console.log(activeTab)
               </div>
             </div>
             <div className="w-96">
-              <Tabs value="app">
+              <Tabs value="followers">
                 <TabsHeader>
-                  <Tab value="app">
+                  <Tab value="followers" onClick={(e) => {setFollowTab(true)}}>
                     <HomeIcon className="-mt-1 mr-2 inline-block h-5 w-5" />
-                    App
+                    Followers
                   </Tab>
-                  <Tab value="message">
+                  <Tab value="following" onClick={(e) => setFollowTab(false)} >
                     <ChatBubbleLeftEllipsisIcon className="-mt-0.5 mr-2 inline-block h-5 w-5" />
-                    Message
-                  </Tab>
-                  <Tab value="settings">
-                    <Cog6ToothIcon className="-mt-1 mr-2 inline-block h-5 w-5" />
-                    Settings
+                    Following
                   </Tab>
                 </TabsHeader>
               </Tabs>
@@ -164,19 +165,66 @@ console.log(activeTab)
             />
             <div>
               <Typography variant="h6" color="blue-gray" className="mb-3">
-                Platform Settings
+                {followTab === true ? "Followers" : "Following"}
               </Typography>
               <ul className="flex flex-col gap-6">
-                {conversationsData.map((props) => (
-                  <MessageCard
-                    key={props.name}
-                    {...props}
-                    action={
-                      <Button variant="text" size="sm">
-                        reply
+                {followTab && isFollowing.map((props) => (
+              
+                  <div key={props_id} className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-4">
+                    <Avatar
+                      src={props?.avatar}
+                      alt=''
+                      variant="rounded"
+                      className="shadow-lg shadow-blue-gray-500/25"
+                    />
+                    <div>
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="mb-1 font-semibold"
+                      >
+                        {props.username}
+                      </Typography>
+                      <Typography className="text-xs font-normal text-blue-gray-400">
+                        {props.email}
+                      </Typography>
+                    </div>
+                  </div>
+                  <Button variant="text" size="sm">
+                        View
                       </Button>
-                    }
-                  />
+                </div>
+           
+                ))}
+                {!followTab && isFollowers.map((props) => (
+           
+                  <div key={props._id} className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-4">
+                    <Avatar
+                      src={props?.avatar}
+                      alt=''
+                      variant="rounded"
+                      className="shadow-lg shadow-blue-gray-500/25"
+                    />
+                    <div>
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="mb-1 font-semibold"
+                      >
+                        {props.username}
+                      </Typography>
+                      <Typography className="text-xs font-normal text-blue-gray-400">
+                        {props.email}
+                      </Typography>
+                    </div>
+                  </div>
+                  <Button variant="text" size="sm">
+                        View
+                      </Button>
+                </div>
+             
                 ))}
               </ul>
             </div>
@@ -185,16 +233,14 @@ console.log(activeTab)
             <Typography variant="h6" color="blue-gray" className="mb-2">
               Projects
             </Typography>
-            <Tabs value={activeTab} onChange={(value) => setActiveTab(value)} className="w-[50%] h-fit text-sm">
+            <Tabs value={activeTab}  className="w-[50%] h-fit text-sm">
               <TabsHeader>
-                <Tab value="myPosts" onClick={(value) => setActiveTab(value)}>My Posts</Tab>
-                <Tab value="favorites" onClick={(e) => setActiveTab(e.value)}>Favorites</Tab>
-                <Tab value="trending"onChange={(value) => setActiveTab(value)}>Trending</Tab>
+                <Tab value="myPosts" onClick={(e) => setActiveTab("myPosts")}>My Posts</Tab>
+                <Tab value="favorites" onClick={(e) => setActiveTab("favorites")}>Favorites</Tab>
               </TabsHeader>
             </Tabs>
             <div className="mt-6 grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-4">
-              {activeTab === "myPosts" ? (
-              posts.map(
+              {posts.map(
                 ({ img, title, description, tags, userId, author, createdAt, category, _id}) => (
                   <Card key={_id} color="transparent" shadow={false}>
                     <CardHeader
@@ -255,9 +301,7 @@ console.log(activeTab)
                   </Card>
                 )
               )
-              ) : (
-                <></>
-              )}
+                          }
 
               
             </div>
