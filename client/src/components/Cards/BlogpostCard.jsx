@@ -156,8 +156,8 @@ const handleUnlike = async () => {
         </div>
       </div>
       <ToastContainer
-        position="top-center"
-        autoClose={2000}
+        position="bottom-right"
+        autoClose={1000}
         hideProgressBar={true}
         newestOnTop={false}
         closeOnClick

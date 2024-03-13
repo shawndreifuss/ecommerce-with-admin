@@ -19,7 +19,6 @@ const Register = () => {
       });
       // Dispatch action to set user
       dispatch({ type: "SET_USER", payload: response.data.user });
-      console.log("User fetched successfully");
     } catch (error) {
       console.error("Failed to fetch user", error);
     }
@@ -55,7 +54,7 @@ const Register = () => {
         fetchUserData();
         handleSuccess(message);
         setTimeout(() => {
-          navigate("/blogs");
+          navigate("/main/home");
         }, 3000);
       } else {
         handleError(message);

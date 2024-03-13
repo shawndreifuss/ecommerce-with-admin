@@ -6,7 +6,7 @@ import {
     ServerStackIcon,
     RectangleStackIcon,
   } from "@heroicons/react/24/solid";
-  import { AddPost, Home, Profile  } from "./pages/Main";
+  import { AddPost, Home } from "./pages/Main";
   import { Register, Login } from "./pages/auth";
 import SinglePost from "./pages/Main/SinglePost";
   
@@ -33,7 +33,7 @@ import SinglePost from "./pages/Main/SinglePost";
           path: "/addBlog",
           element: <AddPost />,
         },
-        
+
       ],
     },
     {

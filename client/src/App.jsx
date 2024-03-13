@@ -7,6 +7,7 @@ import { UserProvider } from './context/UserContext';
 import Auth from './layouts/Auth'
 import Main from './layouts/Main'
 import SinglePost from './pages/Main/SinglePost';
+import Landing from './layouts/Landing';
 
 
 
@@ -20,6 +21,7 @@ const App = () => {
        <Route path="/main/*" element={<Main />} />
       <Route path="/auth/*" element={<Auth />} />
       <Route path="/post/*" element={<SinglePost />}/>
+      <Route path="/landing" element={<Landing />} />
        <Route path="*" element={<Navigate to="/main/home" replace />} />  
     </Routes>
   </UserProvider>

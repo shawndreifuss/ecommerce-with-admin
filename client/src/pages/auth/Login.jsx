@@ -21,7 +21,6 @@ const Login = () => {
       // Dispatch action to set user
       dispatch({ type: "SET_USER", payload: response.data.user });
 
-      console.log(response.data.user);
     } catch (error) {
       console.error("Failed to fetch user", error);
     }
@@ -64,7 +63,7 @@ const Login = () => {
           setLoading(true);
           setTimeout(() => {
             location.reload();
-            navigate("/", { replace: true });
+            navigate("/main/home", { replace: true });
           }, 3000);
         } else {
           console.log(message);
@@ -133,7 +132,7 @@ const Login = () => {
         localStorage.setItem("token", token);
         handleSuccess(message);
         setTimeout(() => {
-          navigate("/landing");
+          navigate("/main/home", { replace: true });
         }, 3000);
       } else {
         handleError(message);
